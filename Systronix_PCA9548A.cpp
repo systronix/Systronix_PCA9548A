@@ -7,12 +7,12 @@
 
 #include <Systronix_PCA9548A.h>	
 
-//---------------------------< CONSTRUCTOR >--------------------------------------------------------------------
-/*!
+/**---------------------------< CONSTRUCTOR >----------------------------------
+
 	@brief  Instantiates a new PCA9548A class to use the given base address
 	base is clipped to min or max if necessary
 
-*/
+-----------------------------------------------------------------------------*/
 
 Systronix_PCA9548A::Systronix_PCA9548A(uint8_t base)
 	{
@@ -31,7 +31,7 @@ Systronix_PCA9548A::Systronix_PCA9548A(uint8_t base)
 		_base = base;
 		_base_clipped = false;
 		}
-	control.total_error_count = 0;				// clear the error counter
+	error.total_error_count = 0;				// clear the error counter
 	}
 
 
@@ -40,7 +40,7 @@ Systronix_PCA9548A::Systronix_PCA9548A()
 	{
 	_base = PCA9548A_SLAVE_ADDR_0;
 	_base_clipped = false;	// since it's constant it must be OK
-	control.total_error_count = true;				// clear the error counter
+	error.total_error_count = true;				// clear the error counter
 	}
 
 
@@ -91,10 +91,11 @@ void Systronix_PCA9548A::begin(void)
 Address the MUX and write to the control register.  
 If successful, _exists = true;
 
-TODO: use Wire.endTransmission with timeout
 TODO: if endTransmission times out its return should so indicate. See in i2c_t3 if it does and if not 
 make that change? This might break code which assumes value can only be max of 4. In that case add 
 a struct with more error information, have the library maintain it?
+
+TODO How is this different from control write ???
 **/
 
 uint8_t Systronix_PCA9548A::init (uint8_t control)
@@ -225,7 +226,7 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 		if (i2c_response)
 			{
 			_exists = false;							// unsuccessful i2c transaction
-			control.ret_val = Wire.status();			// to get error value
+			error.ret_val = Wire.status();			// to get error value
 			tally_errors (error.ret_val);				// increment the appropriate counter
 			}
 		}
