@@ -84,6 +84,8 @@ OR these bits to enable more than one.
 #define PCA9548A_CHAN_6_ENABLE 1<<6
 #define PCA9548A_CHAN_7_ENABLE 1<<7
 
+
+
 class Systronix_PCA9548A
 {
 	protected:
@@ -101,6 +103,20 @@ class Systronix_PCA9548A
 		Errors peg at max value for the data type: they don't roll over.
 
 		**/
+		/**
+		Array of the mux channels so we can easily index into the desired channel X with uint8_t of value X
+		*/
+		const uint8_t channel[8] =
+		{
+			PCA9548A_CHAN_0_ENABLE,
+			PCA9548A_CHAN_1_ENABLE,
+			PCA9548A_CHAN_2_ENABLE,
+			PCA9548A_CHAN_3_ENABLE,
+			PCA9548A_CHAN_4_ENABLE,
+			PCA9548A_CHAN_5_ENABLE,
+			PCA9548A_CHAN_6_ENABLE,
+			PCA9548A_CHAN_7_ENABLE
+		};		
 
 		/** error stucture
 		Note that this can be written by a library user, so it could be cleared if desired as part of 

@@ -28,7 +28,7 @@ My head hurts every time I try to figure out which is "best" for us.
  */
  byte DEBUG = 3;
 
-uint16_t dtime;  // delay in loop
+uint16_t dtime = 1000;  // delay in loop
 
 uint8_t config_value;
 
@@ -72,14 +72,14 @@ void setup(void)
   else 
     Serial.printf("Slave does not exist!\r\n");
   
-  dtime = 2000;      // msec 1000 = 1 sec, 60,000 = 1 minute
   Serial.print(" Interval is ");
   Serial.print(dtime/1000);
   Serial.print(" sec, ");
  
   Serial.println("Setup Complete!");
   Serial.println(" "); 
-  }
+
+}
 
 
 /* ========== LOOP ========== */
@@ -87,16 +87,40 @@ void loop(void)
 {
 //  int16_t temp0;
   uint8_t stat=0;  // status flag
+  uint8_t config_read_val = 0;
 
-  Serial.print("@");
-  Serial.print(millis()/1000);
-  Serial.print(" ");
-  
-  
+
+  for (uint8_t tui = 0; tui <= 7; tui++)
+  {
+    delay(1000);
+    Serial.printf("@%.4u channel %u ", millis()/1000, tui);
+    stat = PCA9548A_70.controlWrite(PCA9548A_70.channel[tui]);
+    
+    if (SUCCESS != stat)
+    {
+      Serial.printf("control write failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+      break;
+    }
+
+    stat = PCA9548A_70.controlRead(&config_read_val);
+    if (SUCCESS != stat)
+    {
+      Serial.printf("control read failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+      break;
+    }
+
+    if (config_read_val != PCA9548A_70.channel[tui])
+    {
+      Serial.printf("Error: control=0x%.2X\r\n", config_read_val);
+      break;
+    }
+    // no error in this loop iter
+    Serial.printf("OK control=0x%.2X\r\n", config_read_val);
+
+  } // end of for loop
+
 
   Serial.println();
-  
-  
   delay(dtime);
 }
 

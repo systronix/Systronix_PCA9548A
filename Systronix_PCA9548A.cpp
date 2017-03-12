@@ -134,16 +134,84 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 		else
 			{
 				// completely successful
+				_control_reg = control;					// shadow copy to remember this setting
 				return SUCCESS;
 			}
 		}
 										
 	return !SUCCESS;
 
-
 	// TODO this could return with error.ret_val set to zero
 	}
 
+
+/**---------------------------< C O N T R O L W R I T E >----------------------------------------------------
+
+Write to the 8-bit control register
+returns 0 if no error, positive values for NAK errors
+
+*/
+
+uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
+	{
+	if (!_exists)							// exit immediately if device does not exist
+		return ABSENT;
+
+	Wire.beginTransmission (_base);			// base address
+	error.ret_val = Wire.write (control);			// write control reg
+	_control_reg = control;					// shadow copy to remember this setting
+
+	if (1 != error.ret_val)
+		{
+		tally_errors (0);			// buffer write length error
+		}
+	else
+		{
+		// no error in buffer write
+	  	error.ret_val = Wire.endTransmission();	
+		// return: 0=success, 1=data too long, 2=recv addr NACK, 3=recv data NACK, 4=other error
+		if (error.ret_val)
+			{
+			error.ret_val = Wire.status();			// to get error value
+			tally_errors (error.ret_val);				// increment the appropriate counter
+			if ((I2C_ADDR_NAK==error.ret_val) || (I2C_DATA_NAK==error.ret_val))
+				{
+				_exists = false;		// addr or data NACK so device is not responding, assume it's not present
+				}
+			}
+		else
+			{
+				// completely successful
+				_control_reg = control;					// shadow copy to remember this setting
+				return SUCCESS;
+			}
+		}
+	return !SUCCESS;
+	// TODO this could return with error.ret_val set to zero
+	}
+
+/**--------------------------< C O N T R O L R E A D >------------------------------------------------------
+
+  Read the 8-bit control register 
+
+  return 0 if no error, FAIL if error (detail by using error.ret_val, ABSENT if slave had prior NAK
+*/
+
+uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
+	{
+	if (!_exists)								// exit immediately if device does not exist
+		return ABSENT;
+
+	if (1 != Wire.requestFrom(_base, 1, I2C_STOP))
+		{
+		error.ret_val = Wire.status();				// to get error value
+		tally_errors (error.ret_val);					// increment the appropriate counter
+		return FAIL;
+		}
+
+	*data = (uint8_t)Wire.read();
+	return SUCCESS;
+	}
 
 //---------------------------< T A L L Y _ E R R O R S >------------------------------------------------------
 //
@@ -154,6 +222,19 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 // for whatever reason.
 //
 // Only call this method if there is some kind of error, since total is incremented on every entry here.
+/** 
+	TODO these error values don't match all the 0..9 status() enum e.g. timeout has a value of 3
+	part of the problem is mashing up status() codes and Wire.write() 
+
+	Detailed error value enum 0..9 returned from status()
+		0..2 	I2C_WAITING, I2C_SENDING, I2C_RECEIVING, 	- not errors, but cycle in progress flags
+		3 		I2C_TIMEOUT, 
+		4-5		I2C_ADDR_NAK, I2C_DATA_NAK, 
+		6		I2C_ARB_LOST, 
+		7 		I2C_BUF_OVF, 
+		8-9		I2C_SLAVE_TX, I2C_SLAVE_RX;
+	0..2 can't happen is status() called after endTransmission
+*/
 
 void Systronix_PCA9548A::tally_errors (uint8_t err)
 	{
@@ -185,78 +266,4 @@ void Systronix_PCA9548A::tally_errors (uint8_t err)
 			break;
 		}
 
-
 	}
-
-
-
-
-
-
-/**---------------------------< C O N T R O L W R I T E >----------------------------------------------------
-
-Write to the 8-bit control register
-returns 0 if no error, positive values for NAK errors
-
-*/
-
-uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
-	{
-	uint8_t i2c_response;						// number of bytes written
-
-	if (!_exists)							// exit immediately if device does not exist
-		return ABSENT;
-
-	Wire.beginTransmission (_base);			// base address
-	i2c_response = Wire.write (control);			// write control reg
-	_control_reg = control;					// shadow copy to remember this setting
-
-	if (1 != i2c_response)
-		{
-		// buffer write error
-		error.ret_val = 0;
-		tally_errors (error.ret_val);			// increment the appropriate counter
-		return FAIL;
-		}
-	else
-		{
-		// no error in buffer write
-	  	i2c_response = Wire.endTransmission();	
-		// return: 0=success, 1=data too long, 2=recv addr NACK, 3=recv data NACK, 4=other error
-		if (i2c_response)
-			{
-			_exists = false;							// unsuccessful i2c transaction
-			error.ret_val = Wire.status();			// to get error value
-			tally_errors (error.ret_val);				// increment the appropriate counter
-			}
-		}
-	
-  	if (SUCCESS == Wire.endTransmission())
-		return SUCCESS;
-
-	return FAIL;							// calling function decides what to do with the error
-	}
-
-/**--------------------------< C O N T R O L R E A D >------------------------------------------------------
-
-  Read the 8-bit control register 
-
-  return 0 if no error, positive bytes read otherwise.
-*/
-
-uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
-	{
-	if (!_exists)								// exit immediately if device does not exist
-		return ABSENT;
-
-	if (1 != Wire.requestFrom(_base, 1, I2C_STOP))
-		{
-		error.ret_val = Wire.status();				// to get error value
-		tally_errors (error.ret_val);					// increment the appropriate counter
-		return FAIL;
-		}
-
-	*data = (uint8_t)Wire.read();
-	return SUCCESS;
-	}
-
