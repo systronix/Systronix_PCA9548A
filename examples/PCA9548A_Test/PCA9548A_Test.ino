@@ -87,12 +87,12 @@ void loop(void)
 {
 //  int16_t temp0;
   uint8_t stat=0;  // status flag
-  uint8_t config_read_val = 0;
+  uint8_t control_read_val = 0;
 
 
   for (uint8_t tui = 0; tui <= 7; tui++)
   {
-    delay(1000);
+    // delay(1000);
     Serial.printf("@%.4u channel %u ", millis()/1000, tui);
     stat = PCA9548A_70.controlWrite(PCA9548A_70.channel[tui]);
     
@@ -102,26 +102,35 @@ void loop(void)
       break;
     }
 
-    stat = PCA9548A_70.controlRead(&config_read_val);
+    stat = PCA9548A_70.testSimple();
+    if (SUCCESS != stat)
+    {
+      Serial.printf("simple test in middle of write/read loop failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+      break;
+    }
+
+    stat = PCA9548A_70.controlRead(&control_read_val);
     if (SUCCESS != stat)
     {
       Serial.printf("control read failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
       break;
     }
 
-    if (config_read_val != PCA9548A_70.channel[tui])
+    if (control_read_val != PCA9548A_70.channel[tui])
     {
-      Serial.printf("Error: control=0x%.2X\r\n", config_read_val);
+      Serial.printf("Error: control=0x%.2X\r\n", control_read_val);
       break;
     }
+
+
     // no error in this loop iter
-    Serial.printf("OK control=0x%.2X\r\n", config_read_val);
+    Serial.printf("OK control=0x%.2X\r\n", control_read_val);
 
   } // end of for loop
 
-
+  Serial.printf("Total %u good, %u bad\r\n", PCA9548A_70.error.successful_count, PCA9548A_70.error.total_error_count);
   Serial.println();
-  delay(dtime);
+  // delay(dtime);
 }
 
 

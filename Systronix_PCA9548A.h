@@ -132,6 +132,7 @@ class Systronix_PCA9548A
 			uint32_t	other_error_count;				// arbitration lost or timeout
 			uint32_t	unknown_error_count;
 			uint32_t	total_error_count;				// quick check to see if any have happened
+			uint32_t	successful_count;				// successful access cycle
 			} error;
 
 		boolean exists();
@@ -146,7 +147,9 @@ class Systronix_PCA9548A
 		uint8_t		init (uint8_t control_value);		// set operation mode, check device present and communicating
 
 		uint8_t		controlWrite (uint8_t pointer);		// 
-		uint8_t		controlRead (uint8_t *data);			// read 8-bit control register
+		uint8_t		controlRead (uint8_t *data);		// read 8-bit control register
+		uint8_t		testSimple (void);					// simple nondestructive test of control read/write
+		uint8_t		resetAll (void);					// reset device if possible, re-init, clear all errors
 
 	private:
 

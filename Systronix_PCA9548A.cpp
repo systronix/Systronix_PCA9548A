@@ -134,6 +134,7 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 		else
 			{
 				// completely successful
+				error.successful_count++;
 				_control_reg = control;					// shadow copy to remember this setting
 				return SUCCESS;
 			}
@@ -182,6 +183,7 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 		else
 			{
 				// completely successful
+				error.successful_count++;
 				_control_reg = control;					// shadow copy to remember this setting
 				return SUCCESS;
 			}
@@ -209,9 +211,56 @@ uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 		return FAIL;
 		}
 
+	error.successful_count++;
 	*data = (uint8_t)Wire.read();
 	return SUCCESS;
 	}
+
+
+/**---------------------------< VERIFY_SIMPLE >----------------------------------
+	@brief  Confirm slave is still present and responding as expected.
+
+	Read the control reg. Then write test patterns to it, reading to verify.
+	Patterns are 0xA5 and its complement 0x5A
+	Then restore to the original value.
+
+	Error counters and exists will be updated by the subroutines which this
+	function calls.
+
+	return SUCCESS if all was OK, !SUCCESS if any problem
+	error struct has details of error(s) if any
+-----------------------------------------------------------------------------*/
+
+uint8_t Systronix_PCA9548A::testSimple (void)
+{
+	uint8_t control_read_val = 0;
+	uint8_t control_original = 0;
+	uint8_t stat = 0;
+	uint8_t test_write = 0xA5;
+
+	stat = controlRead(&control_original);
+	if (SUCCESS != stat) return !SUCCESS;
+
+	stat = controlWrite(test_write);
+	if (SUCCESS != stat) return !SUCCESS;
+	stat = controlRead(&control_read_val);
+	if (SUCCESS != stat) return !SUCCESS;
+	if (test_write != control_read_val) return !SUCCESS;
+
+	test_write = ~test_write;
+	stat = controlWrite(test_write);
+	if (SUCCESS != stat) return !SUCCESS;
+	stat = controlRead(&control_read_val);
+	if (SUCCESS != stat) return !SUCCESS;
+	if (test_write != control_read_val) return !SUCCESS;
+
+	stat = controlWrite(control_original);
+	if (SUCCESS != stat) return !SUCCESS;
+
+	return SUCCESS;
+}
+
+
 
 //---------------------------< T A L L Y _ E R R O R S >------------------------------------------------------
 //
