@@ -35,12 +35,16 @@ uint8_t config_value;
 
 Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);    
 
+const char * text_ptr;
+
 /* ========== SETUP ========== */
 void setup(void) 
 {
 
 
   uint8_t stat = 0;
+
+  pinMode(LED_BUILTIN,OUTPUT);    // LED
 
   
   Serial.begin(115200);     // use max baud rate
@@ -61,17 +65,18 @@ void setup(void)
 	stat = PCA9548A_70.init(config_value);
   Serial.printf(" write CFG: %X\r\n", config_value); 
 
-  if (SUCCESS != stat) 
-    Serial.print (" config init error! ");
+  if (SUCCESS != stat)
+  {
+    Serial.printf("init failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+    Serial.printf ("%s\r\n", text_ptr);
+  }
+
+ // Wire.resetBus();
 
   if (PCA9548A_70.base_clipped() )
     Serial.printf("base address out of range, clipped to 0x%u", PCA9548A_70.base_address());
 
-  if (PCA9548A_70.exists() )
-    Serial.printf("Slave exists\r\n");
-  else 
-    Serial.printf("Slave does not exist!\r\n");
-  
   Serial.print(" Interval is ");
   Serial.print(dtime/1000);
   Serial.print(" sec, ");
@@ -90,6 +95,7 @@ void loop(void)
   uint8_t control_read_val = 0;
 
 
+  digitalWrite(LED_BUILTIN,HIGH); // LED on
   for (uint8_t tui = 0; tui <= 7; tui++)
   {
     // delay(1000);
@@ -99,6 +105,8 @@ void loop(void)
     if (SUCCESS != stat)
     {
       Serial.printf("control write failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+      Serial.printf ("%s\r\n", text_ptr);
       break;
     }
 
@@ -127,8 +135,10 @@ void loop(void)
     Serial.printf("OK control=0x%.2X\r\n", control_read_val);
 
   } // end of for loop
+  digitalWrite(LED_BUILTIN,LOW); // LED off+
 
   Serial.printf("Total %u good, %u bad\r\n", PCA9548A_70.error.successful_count, PCA9548A_70.error.total_error_count);
+  Serial.printf("busReset count: %u\r\n", Wire.resetBusCountRead());
   Serial.println();
   // delay(dtime);
 }

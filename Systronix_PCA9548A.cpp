@@ -7,6 +7,8 @@
 
 #include <Systronix_PCA9548A.h>	
 
+
+
 /**---------------------------< CONSTRUCTOR >----------------------------------
 
 	@brief  Instantiates a new PCA9548A class to use the given base address
@@ -40,7 +42,7 @@ Systronix_PCA9548A::Systronix_PCA9548A()
 	{
 	_base = PCA9548A_SLAVE_ADDR_0;
 	_base_clipped = false;	// since it's constant it must be OK
-	error.total_error_count = true;				// clear the error counter
+	error.total_error_count = 0;				// clear the error counter
 	}
 
 
@@ -53,11 +55,6 @@ Systronix_PCA9548A::~Systronix_PCA9548A()
 /**
 	Variables publicly read-only, privately read/write
 */
-// sensor is instantiated and responds to I2C at base address
-boolean Systronix_PCA9548A::exists()
-{
-	return _exists;
-}
 
 // base address passed in constructor was out of range so clipped to value min <= base <= max
 boolean Systronix_PCA9548A::base_clipped()
@@ -83,6 +80,7 @@ void Systronix_PCA9548A::begin(void)
 
 	Wire.setDefaultTimeout(1000);	// 1000 usec = 1 msec
 
+
 	}
 
 
@@ -100,7 +98,6 @@ TODO How is this different from control write ???
 
 uint8_t Systronix_PCA9548A::init (uint8_t control)
 	{
-	_exists = true;							// anticipate success
 	
 	Wire.beginTransmission (_base);			// base address
 	// no return to check
@@ -112,8 +109,6 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 		tally_errors (0);		// data length error
 		// now if error, error.ret_val is 0
 		// and no point in continuing
-		// we don't know device exists if we can't communicate
-		_exists = false;
 		}
 	else
 		{
@@ -123,12 +118,14 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 	  	if (error.ret_val)
 			{					
 			// unsuccessful i2c transaction, get more detail
-			error.ret_val = Wire.status();			// detailed error value enum 0..9
-			// return = I2C_WAITING, I2C_SENDING, I2C_RECEIVING, I2C_TIMEOUT, I2C_ADDR_NAK, I2C_DATA_NAK, I2C_ARB_LOST, I2C_BUF_OVF, I2C_SLAVE_TX, I2C_SLAVE_RX;
+			// Serial.printf("init endTransmission failed with return of 0x%.2X\r\n", error.ret_val);
+			error.ret_val = Wire.status();			// detailed status value enum 0..10
+			// return = I2C_WAITING, I2C_SENDING, I2C_SEND_ADDR, I2C_RECEIVING, I2C_TIMEOUT, I2C_ADDR_NAK, I2C_DATA_NAK, I2C_ARB_LOST, I2C_BUF_OVF, I2C_SLAVE_TX, I2C_SLAVE_RX
+			// Serial.printf("init endTransmission status value 0x%.2X\r\n", error.ret_val);
 			tally_errors (error.ret_val);							// increment the appropriate counter
-			if ((I2C_ADDR_NAK==error.ret_val) || (I2C_DATA_NAK==error.ret_val))
+			if ((I2C_TIMEOUT<=error.ret_val) && (I2C_DATA_NAK>=error.ret_val))
 				{
-				_exists = false;		// addr or data NACK so device is not responding, assume it's not present
+				// Serial.printf("init _exists is %s\r\n", _exists ? "true" : "false");	// thanks 
 				}
 			}
 		else
@@ -155,9 +152,6 @@ returns 0 if no error, positive values for NAK errors
 
 uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 	{
-	if (!_exists)							// exit immediately if device does not exist
-		return ABSENT;
-
 	Wire.beginTransmission (_base);			// base address
 	error.ret_val = Wire.write (control);			// write control reg
 	_control_reg = control;					// shadow copy to remember this setting
@@ -175,10 +169,6 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 			{
 			error.ret_val = Wire.status();			// to get error value
 			tally_errors (error.ret_val);				// increment the appropriate counter
-			if ((I2C_ADDR_NAK==error.ret_val) || (I2C_DATA_NAK==error.ret_val))
-				{
-				_exists = false;		// addr or data NACK so device is not responding, assume it's not present
-				}
 			}
 		else
 			{
@@ -201,8 +191,6 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 
 uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 	{
-	if (!_exists)								// exit immediately if device does not exist
-		return ABSENT;
 
 	if (1 != Wire.requestFrom(_base, 1, I2C_STOP))
 		{
@@ -276,13 +264,13 @@ uint8_t Systronix_PCA9548A::testSimple (void)
 	part of the problem is mashing up status() codes and Wire.write() 
 
 	Detailed error value enum 0..9 returned from status()
-		0..2 	I2C_WAITING, I2C_SENDING, I2C_RECEIVING, 	- not errors, but cycle in progress flags
-		3 		I2C_TIMEOUT, 
-		4-5		I2C_ADDR_NAK, I2C_DATA_NAK, 
-		6		I2C_ARB_LOST, 
-		7 		I2C_BUF_OVF, 
-		8-9		I2C_SLAVE_TX, I2C_SLAVE_RX;
-	0..2 can't happen is status() called after endTransmission
+		0..2 	I2C_WAITING, I2C_SENDING, I2C_RECEIVING, 	- not errors, but cycle in progress when Teensy is master
+		3 		I2C_TIMEOUT, 								- error
+		4-5		I2C_ADDR_NAK, I2C_DATA_NAK, 				- errors
+		6		I2C_ARB_LOST, 								- error, sort of (in multi-master mode)
+		7 		I2C_BUF_OVF, 								- error
+		8-9		I2C_SLAVE_TX, I2C_SLAVE_RX;					- not errors? Only apply to Teensy slave mode?
+	0..2 can't happen if status() called after endTransmission since it blocks until cycle is complete
 */
 
 void Systronix_PCA9548A::tally_errors (uint8_t err)

@@ -12,6 +12,8 @@
 
     v0.1	2017Mar07 bboyes Start based on Systronix_TMP275
 
+    Philosophy
+
 */
 
 
@@ -92,7 +94,6 @@ class Systronix_PCA9548A
 		uint8_t		_base;						// base address for this instance; four possible values
 		uint8_t		_control_reg;				// copy of the control register value so we know which channels enabled
 		void		tally_errors (uint8_t);		// maintains the i2c_t3 error counters
-		boolean		_exists;
 		boolean		_base_clipped;
 
 	public:
@@ -118,6 +119,26 @@ class Systronix_PCA9548A
 			PCA9548A_CHAN_7_ENABLE
 		};		
 
+		/**
+		Array of Wire.status() extended return code strings
+		index into this with the value of status
+		See NAP_UI_key_defs.h
+		*/
+		const char * const status_text[11] =
+		{
+			"I2C_WAITING", 
+			"I2C_SENDING", 
+			"I2C_SEND_ADDR",
+			"I2C_RECEIVING",
+			"I2C_TIMEOUT", 
+			"I2C_ADDR_NAK", 
+			"I2C_DATA_NAK",
+			"I2C_ARB_LOST",
+			"I2C_BUF_OVF",
+			"I2C_SLAVE_TX", 
+			"I2C_SLAVE_RX"
+		};
+
 		/** error stucture
 		Note that this can be written by a library user, so it could be cleared if desired as part of 
 		some error recovery or logging operation. It could also be inadvertenly erased...
@@ -135,7 +156,6 @@ class Systronix_PCA9548A
 			uint32_t	successful_count;				// successful access cycle
 			} error;
 
-		boolean exists();
 		boolean base_clipped();
 		uint8_t base_address();
 
