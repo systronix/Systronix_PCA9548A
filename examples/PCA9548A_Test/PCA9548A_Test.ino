@@ -37,6 +37,8 @@ Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);
 
 const char * text_ptr;
 
+uint32_t startuptime = 0;
+
 /* ========== SETUP ========== */
 void setup(void) 
 {
@@ -81,11 +83,18 @@ void setup(void)
   Serial.print(dtime/1000);
   Serial.print(" sec, ");
  
-  Serial.println("Setup Complete!");
-  Serial.println(" "); 
+  Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose output.\r\n\n");
+
+  // delay(2000);
+
+  startuptime = millis()/1000;
 
 }
 
+boolean verbose = false;
+
+uint32_t oldtime, newtime;
+uint8_t inbyte = 0;
 
 /* ========== LOOP ========== */
 void loop(void) 
@@ -95,18 +104,40 @@ void loop(void)
   uint8_t control_read_val = 0;
 
 
+
+  oldtime = millis()/1000;
+
+  if (Serial.available()>0)
+  {
+    inbyte = Serial.read();
+    switch (inbyte)
+    {
+      case 'q':
+      case 'Q':
+        verbose = false;
+      break;
+
+      case 'v':
+      case 'V':
+        verbose = true;
+      break;
+
+      //ignore others
+    }
+  }
+
+
   digitalWrite(LED_BUILTIN,HIGH); // LED on
   for (uint8_t tui = 0; tui <= 7; tui++)
   {
-    // delay(1000);
-    Serial.printf("@%.4u channel %u ", millis()/1000, tui);
+    if (verbose) Serial.printf("@%.4u ch %u ", millis(), tui);
     stat = PCA9548A_70.controlWrite(PCA9548A_70.channel[tui]);
     
     if (SUCCESS != stat)
     {
-      Serial.printf("control write failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf ("%s\r\n", text_ptr);
+      Serial.printf("control write failed with return of 0x%.2X, %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
       break;
     }
 
@@ -132,14 +163,27 @@ void loop(void)
 
 
     // no error in this loop iter
-    Serial.printf("OK control=0x%.2X\r\n", control_read_val);
+    if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
 
   } // end of for loop
   digitalWrite(LED_BUILTIN,LOW); // LED off+
 
-  Serial.printf("Total %u good, %u bad\r\n", PCA9548A_70.error.successful_count, PCA9548A_70.error.total_error_count);
-  Serial.printf("busReset count: %u\r\n", Wire.resetBusCountRead());
-  Serial.println();
+  newtime = millis()/1000;
+
+  if ( (verbose) || (newtime > oldtime) )
+  {
+    Serial.printf("et:%u  Good:%u  %u/sec", millis()/1000, PCA9548A_70.error.successful_count, PCA9548A_70.error.successful_count/(newtime-startuptime));
+    if (PCA9548A_70.error.total_error_count) 
+      {
+        Serial.printf("  bad:%u", PCA9548A_70.error.total_error_count);
+#if defined I2C_AUTO_RETRY
+        Serial.printf("  busReset: %u", Wire.resetBusCountRead());
+#endif
+      }
+    Serial.println(); 
+    if (verbose) Serial.println();
+  }
+
   // delay(dtime);
 }
 

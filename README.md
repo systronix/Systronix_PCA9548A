@@ -18,9 +18,16 @@ This device lets you take one I2C bus and switch it to up to 8 other I2C branche
  - you can select more than out active output at a time
  - this device is not a buffer, so it does not isolate capacitance between input and active output(s).
  - beware total I2C net loading which is the sum of input and output nets, including capacitance, and pullups.
+
+ ## Examples
+ - PCA9548A_Test.ino beats on the MUX pretty hard, setting each channel in turn active, with a nondestructive read/modify/write/restore test by calling testSimple()
+ in the middle of every channel test. Output can be verbose or quiet by sending v or q to the serial monitor. For this example to work properly you want I2C_AUTO_RETRY
+ and the resetBus counter included in my [minorly-revised i2c_t3 library](https://github.com/systronix/i2c_t3)
  
 ### Comments
- - Also included is an example/test program 
+ - This MUX can get into a state when reset or a cycle interrupted where it can drive SDA low. 
+ The only receovery is to use i2c_t3 wonderful resetBus, which can be invoked automatically if  I2C_AUTO_RETRY is #define in i2c_t3.h.
+ I'm curious to see if the same holds true for our custom hardware as for the Adafruit breakout.
  - See the source code for plenty of explanatory comments
 
 ### TODO
