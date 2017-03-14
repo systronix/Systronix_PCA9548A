@@ -122,9 +122,14 @@ class Systronix_PCA9548A
 		};		
 
 		/**
-		Array of Wire.status() extended return code strings
-		index into this with the value of status
-		See NAP_UI_key_defs.h
+		Array of Wire.status() extended return code strings, 11 as of 29Dec16 i2c_t3 release
+		index into this with the value of status.
+		There is an array of constant text: const status_text[11]
+		char * makes the decl an array of char pointers, each pointing to constant text
+		the first const means that array of char pointers can't change.
+		We can access this with a const char * text_ptr which means point to char(s) which happen to be const
+		Note each literal string has a null terminator added by C compiler.
+		See NAP_UI_key_defs.h for similar
 		*/
 		const char * const status_text[11] =
 		{

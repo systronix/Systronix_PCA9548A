@@ -23,6 +23,11 @@ This device lets you take one I2C bus and switch it to up to 8 other I2C branche
  - PCA9548A_Test.ino beats on the MUX pretty hard, setting each channel in turn active, with a nondestructive read/modify/write/restore test by calling testSimple()
  in the middle of every channel test. Output can be verbose or quiet by sending v or q to the serial monitor. For this example to work properly you want I2C_AUTO_RETRY
  and the resetBus counter included in my [minorly-revised i2c_t3 library](https://github.com/systronix/i2c_t3)
+ - Mux_and_Temps acesses TMP275 temp sensors on multiple PCA9548A channels. It is stressfull, running I2C at 100% duty cycle at 100 kHz. Output:
+	et:337  Good:1542913  4605/sec
+	simple test in middle of write/read loop failed with return of 0x05: I2C_ADDR_NAK
+	et:338  Good:1546141  4601/sec  bad:1  busReset: 0
+This shows a ADDR NAK error at 337 seconds, already 1,542,913 I2C messages.
  
 ### Comments
  - This MUX can get into a state when reset or a cycle interrupted where it can drive SDA low. 

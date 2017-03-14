@@ -133,7 +133,6 @@ void loop(void)
     {
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
       Serial.printf("control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
-      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
@@ -141,7 +140,8 @@ void loop(void)
     stat = PCA9548A_70.testSimple();
     if (SUCCESS != stat)
     {
-      Serial.printf("simple test in middle of write/read loop failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+      Serial.printf("simple test in middle of write/read loop failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
@@ -149,14 +149,15 @@ void loop(void)
     stat = PCA9548A_70.controlRead(&control_read_val);
     if (SUCCESS != stat)
     {
-      Serial.printf("control read failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+      Serial.printf("control read failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
 
     if (control_read_val != PCA9548A_70.channel[tui])
     {
-      Serial.printf("Error: control=0x%.2X\r\n", control_read_val);
+      Serial.printf("Error: control value=0x%.2X\r\n", control_read_val);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }

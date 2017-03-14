@@ -145,7 +145,7 @@ void loop(void)
   if (SUCCESS != stat)
   {
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf("control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+    Serial.printf("mux0 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
     delay(dtime/2); // don't blast repeat failures too quickly
   }
@@ -175,7 +175,7 @@ void loop(void)
   if (SUCCESS != stat)
   {
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf("control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+    Serial.printf("mux1 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
     delay(dtime/2); // don't blast repeat failures too quickly
   }
@@ -205,7 +205,7 @@ void loop(void)
   if (SUCCESS != stat)
   {
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf("control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+    Serial.printf("mux2 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
     delay(dtime/2); // don't blast repeat failures too quickly
   }
@@ -229,7 +229,7 @@ void loop(void)
   if (stat != SUCCESS) Serial.printf("Mux2Temp1 error, stat=%u\r\n", stat);
   temp = Mux2Temp1.raw12_to_c(rawtemp);
   Serial.printf ("Mux2Temp1 %6.4f C\r\n", temp);  
-  
+
 
   Serial.println();
 

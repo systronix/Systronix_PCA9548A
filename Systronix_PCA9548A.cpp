@@ -263,14 +263,28 @@ uint8_t Systronix_PCA9548A::testSimple (void)
 	TODO these error values don't match all the 0..9 status() enum e.g. timeout has a value of 3
 	part of the problem is mashing up status() codes and Wire.write() 
 
-	Detailed error value enum 0..9 returned from status()
-		0..2 	I2C_WAITING, I2C_SENDING, I2C_RECEIVING, 	- not errors, but cycle in progress when Teensy is master
-		3 		I2C_TIMEOUT, 								- error
-		4-5		I2C_ADDR_NAK, I2C_DATA_NAK, 				- errors
-		6		I2C_ARB_LOST, 								- error, sort of (in multi-master mode)
-		7 		I2C_BUF_OVF, 								- error
-		8-9		I2C_SLAVE_TX, I2C_SLAVE_RX;					- not errors? Only apply to Teensy slave mode?
+	Detailed status (not all are errors!) 11 values enum 0..10 returned from status()
+		0..3 	I2C_WAITING, I2C_SENDING, I2C_RECEIVING, I2C_SEND_ADDR	- not errors, but cycle in progress when Teensy is master
+		4 		I2C_TIMEOUT, 								- error
+		5-6		I2C_ADDR_NAK, I2C_DATA_NAK, 				- errors
+		7		I2C_ARB_LOST, 								- error, sort of (in multi-master mode)
+		8 		I2C_BUF_OVF, 								- error
+		9-10	I2C_SLAVE_TX, I2C_SLAVE_RX;					- not errors? Only apply to Teensy slave mode?
 	0..2 can't happen if status() called after endTransmission since it blocks until cycle is complete
+
+From 29Dec16 release i2c_t3.h, now 11 status codes
+enum i2c_status   {I2C_WAITING,
+                   I2C_SENDING,
+                   I2C_SEND_ADDR,
+                   I2C_RECEIVING,
+                   I2C_TIMEOUT,
+                   I2C_ADDR_NAK,
+                   I2C_DATA_NAK,
+                   I2C_ARB_LOST,
+                   I2C_BUF_OVF,
+                   I2C_SLAVE_TX,
+                   I2C_SLAVE_RX};
+
 */
 
 void Systronix_PCA9548A::tally_errors (uint8_t err)
