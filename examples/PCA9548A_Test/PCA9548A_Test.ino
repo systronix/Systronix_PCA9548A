@@ -54,8 +54,7 @@ void setup(void)
   // Wait here for 10 seconds to see if we will use Serial Monitor, so output is not lost
   while((!Serial) && (millis()<10000));    // wait until serial monitor is open or timeout, which seems to fall through
  
-  Serial.print("PCA9548A Library Test Code at 0x");
-  Serial.println(PCA9548A_70.base_address(), HEX); 
+  Serial.printf("\r\nPCA9548A Library Test Code at 0x%.2X\r\n", PCA9548A_70.base_address());
    
   
   // start PCA9548A library
@@ -65,19 +64,16 @@ void setup(void)
 
   // initialize 
 	stat = PCA9548A_70.init(config_value);
-  Serial.printf(" write CFG: %X\r\n", config_value); 
-
+  Serial.printf(" Init control reg to 0x%.2X\r\n", config_value); 
   if (SUCCESS != stat)
   {
-    Serial.printf("init failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf ("%s\r\n", text_ptr);
+    Serial.printf(" Init failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
   }
-
- // Wire.resetBus();
+ 
 
   if (PCA9548A_70.base_clipped() )
-    Serial.printf("base address out of range, clipped to 0x%u", PCA9548A_70.base_address());
+    Serial.printf(" base address out of range, clipped to 0x%u", PCA9548A_70.base_address());
 
   Serial.print(" Interval is ");
   Serial.print(dtime/1000);
@@ -85,7 +81,7 @@ void setup(void)
  
   Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose output.\r\n\n");
 
-  // delay(2000);
+  delay(2000);
 
   startuptime = millis()/1000;
 
@@ -136,8 +132,9 @@ void loop(void)
     if (SUCCESS != stat)
     {
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("control write failed with return of 0x%.2X, %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+      Serial.printf("control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+      delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
 
@@ -145,6 +142,7 @@ void loop(void)
     if (SUCCESS != stat)
     {
       Serial.printf("simple test in middle of write/read loop failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+      delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
 
@@ -152,12 +150,14 @@ void loop(void)
     if (SUCCESS != stat)
     {
       Serial.printf("control read failed with return of 0x%.2X\r\n", PCA9548A_70.error.ret_val);
+      delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
 
     if (control_read_val != PCA9548A_70.channel[tui])
     {
       Serial.printf("Error: control=0x%.2X\r\n", control_read_val);
+      delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
 

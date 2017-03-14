@@ -49,9 +49,11 @@ This library was developed and tested on Teensy3 (ARM CortexM4) with I2C_T3 libr
 #include <Wire.h>	// for AVR I2C library
 #endif
 
+#if not defined SUCCESS
 #define		SUCCESS	0		// best to test for !SUCCESS
 #define		FAIL	0xFF
 #define		ABSENT	0xFD
+#endif
 
 /** --------  Device Addressing --------
 PCA9548A base address is 0x70 (B 1001 000x) where x is R/W
@@ -175,6 +177,6 @@ class Systronix_PCA9548A
 
 };
 
-extern Systronix_PCA9548A tmp275;
+extern Systronix_PCA9548A pca9548a;
 
 #endif /* SYSTRONIX_PCA9548A_h */
