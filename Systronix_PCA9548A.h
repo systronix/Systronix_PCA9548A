@@ -40,14 +40,16 @@ This library was developed and tested on Teensy3 (ARM CortexM4) with I2C_T3 libr
 
 #include <Arduino.h>
 
+#include <Wire.h>	// try Paul's new Wire lib
+
 // Use Teensy improved I2C library
 //#if defined (__MK20DX256__) || defined (__MK20DX128__) 	// Teensy 3.1 or 3.2 || Teensy 3.0
 // from https://forum.pjrc.com/threads/42411-Communication-impossible-in-I2C-tennsy3-6?p=135630&viewfull=1#post135630
-#if defined(KINETISK) || defined(KINETISL)	// Teensy 3.X and LC
-#include <i2c_t3.h>		
-#else
-#include <Wire.h>	// for AVR I2C library
-#endif
+// #if defined(KINETISK) || defined(KINETISL)	// Teensy 3.X and LC
+// #include <i2c_t3.h>		
+// #else
+// #include <Wire.h>	// for AVR I2C library
+// #endif
 
 #if not defined SUCCESS
 #define		SUCCESS	0		// best to test for !SUCCESS

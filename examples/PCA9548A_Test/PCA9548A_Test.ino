@@ -79,7 +79,11 @@ void setup(void)
   Serial.print(dtime/1000);
   Serial.print(" sec, ");
  
-  Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose, r/R for Wire.resetBus()\r\n\n");
+  Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose");
+#if defined I2C_T3_H 
+  Serial.printf(", r/R for Wire.resetBus()");
+#endif
+  Serial.printf("\r\n\n");
 
   delay(2000);
 
@@ -111,23 +115,24 @@ void loop(void)
       case 'q':
       case 'Q':
         verbose = false;
-      break;
+        break;
 
       case 'v':
       case 'V':
         verbose = true;
-      break;
+        break;
 
+#if defined I2C_T3_H 
       case 'r':
-      case 'R':
+      case 'R':     
         Serial.printf("\nWill call resetBus!\r\n");
         Wire.resetBus();
-      break;
+        break;
+#endif
 
       //ignore others
     }
   }
-
 
 
   digitalWrite(LED_BUILTIN,HIGH); // LED on

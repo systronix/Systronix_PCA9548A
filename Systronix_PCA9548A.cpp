@@ -77,9 +77,9 @@ uint8_t Systronix_PCA9548A::base_address()
 void Systronix_PCA9548A::begin(void)
 	{
 	Wire.begin();			// join I2C as master
-
+#if defined I2C_T_H	
 	Wire.setDefaultTimeout(10000);	// 1000 usec = 1 msec; 10,000 = 10 msec seems too long.
-
+#endif
 
 	}
 
@@ -119,14 +119,12 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 			{					
 			// unsuccessful i2c transaction, get more detail
 			// Serial.printf("init endTransmission failed with return of 0x%.2X\r\n", error.ret_val);
+#if defined I2C_T_H				
 			error.ret_val = Wire.status();			// detailed status value enum 0..10
 			// return = I2C_WAITING, I2C_SENDING, I2C_SEND_ADDR, I2C_RECEIVING, I2C_TIMEOUT, I2C_ADDR_NAK, I2C_DATA_NAK, I2C_ARB_LOST, I2C_BUF_OVF, I2C_SLAVE_TX, I2C_SLAVE_RX
 			// Serial.printf("init endTransmission status value 0x%.2X\r\n", error.ret_val);
+#endif			
 			tally_errors (error.ret_val);							// increment the appropriate counter
-			if ((I2C_TIMEOUT<=error.ret_val) && (I2C_DATA_NAK>=error.ret_val))
-				{
-				// Serial.printf("init _exists is %s\r\n", _exists ? "true" : "false");	// thanks 
-				}
 			}
 		else
 			{
@@ -167,7 +165,9 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 		// return: 0=success, 1=data too long, 2=recv addr NACK, 3=recv data NACK, 4=other error
 		if (error.ret_val)
 			{
+#if defined I2C_T_H					
 			error.ret_val = Wire.status();			// to get error value
+#endif			
 			tally_errors (error.ret_val);				// increment the appropriate counter
 			}
 		else
@@ -191,10 +191,15 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 
 uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 	{
-
+#if defined I2C_T_H	
 	if (1 != Wire.requestFrom(_base, 1, I2C_STOP))
+#else
+	if (1 != Wire.requestFrom(_base, (uint8_t)1, true))		// Wire lib version
+#endif		
 		{
+#if defined I2C_T_H	
 		error.ret_val = Wire.status();				// to get error value
+#endif
 		tally_errors (error.ret_val);					// increment the appropriate counter
 		return FAIL;
 		}
