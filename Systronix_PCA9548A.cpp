@@ -78,7 +78,7 @@ void Systronix_PCA9548A::begin(void)
 	{
 	Wire.begin();			// join I2C as master
 
-	Wire.setDefaultTimeout(1000);	// 1000 usec = 1 msec
+	Wire.setDefaultTimeout(10000);	// 1000 usec = 1 msec; 10,000 = 10 msec seems too long.
 
 
 	}

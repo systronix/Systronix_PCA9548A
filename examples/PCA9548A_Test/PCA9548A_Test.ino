@@ -79,7 +79,7 @@ void setup(void)
   Serial.print(dtime/1000);
   Serial.print(" sec, ");
  
-  Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose output.\r\n\n");
+  Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose, r/R for Wire.resetBus()\r\n\n");
 
   delay(2000);
 
@@ -118,9 +118,16 @@ void loop(void)
         verbose = true;
       break;
 
+      case 'r':
+      case 'R':
+        Serial.printf("\nWill call resetBus!\r\n");
+        Wire.resetBus();
+      break;
+
       //ignore others
     }
   }
+
 
 
   digitalWrite(LED_BUILTIN,HIGH); // LED on
@@ -167,6 +174,7 @@ void loop(void)
     if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
 
   } // end of for loop
+
   digitalWrite(LED_BUILTIN,LOW); // LED off+
 
   newtime = millis()/1000;
@@ -178,7 +186,7 @@ void loop(void)
       {
         Serial.printf("  bad:%u", PCA9548A_70.error.total_error_count);
 #if defined I2C_AUTO_RETRY
-        Serial.printf("  busReset: %u", Wire.resetBusCountRead());
+        Serial.printf("  resetBus: %u", Wire.resetBusCountRead());
 #endif
       }
     Serial.println(); 
