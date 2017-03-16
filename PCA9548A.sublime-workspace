@@ -251,7 +251,7 @@
 			"file": "Systronix_PCA9548A.h",
 			"settings":
 			{
-				"buffer_size": 5911,
+				"buffer_size": 6742,
 				"encoding": "Western (Windows 1252)",
 				"line_ending": "Windows"
 			}
@@ -260,7 +260,7 @@
 			"file": "Systronix_PCA9548A.cpp",
 			"settings":
 			{
-				"buffer_size": 9481,
+				"buffer_size": 10508,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -269,7 +269,17 @@
 			"file": "examples/PCA9548A_Test/PCA9548A_Test.ino",
 			"settings":
 			{
-				"buffer_size": 4915,
+				"buffer_size": 5811,
+				"encoding": "UTF-8",
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "examples/PCA9548A_Test/PCA9548A_Test_logs.md",
+			"settings":
+			{
+				"buffer_size": 1231,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
@@ -335,19 +345,21 @@
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_PCA9548A",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_PCA9548A/examples",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_PCA9548A/examples/PCA9548A_Test",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP275",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP275/examples",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP275/examples/TMP275_Test",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP275/examples/TMP275_Test3",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/i2c_t3/examples",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/i2c_t3/examples/advanced_scanner",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/i2c_t3/examples/basic_scanner",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/TeensyID/examples",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/TeensyID/examples/ReadAll"
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP102/examples",
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP102/examples/TMP102_LibraryTest",
+		"/C/Users/BAB/Documents/code/Arduino/libraries/SALT_UI",
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Wire",
+		"/C/Users/BAB/Documents/code/Arduino/libraries/SALT_utilities"
 	],
 	"file_history":
 	[
+		"/C/Users/BAB/Documents/code/Arduino/SALT_reptile/SALT_reptile.ino",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_PCA9548A/README.md",
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP102/README.md",
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP275/README.md",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/SALT_UI/NAP_UI_key_defs.h",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/i2c_t3/examples/basic_scanner/basic_scanner.ino",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP275/Systronix_TMP275.h",
@@ -359,7 +371,6 @@
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_MB85RC256V/Systronix_MB85RC256V.cpp",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/i2c_t3/README.md",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP102/Systronix_TMP102.cpp",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_TMP275/README.md",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/SALT_JX/SALT_JX.cpp",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/SALT_JX/SALT_JX.h",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/SALT_JX/README.md",
@@ -400,7 +411,6 @@
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_MB85RC256V/examples/ini_loader/ini_loader.ino",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_MB85RC256V/ini_files/sswec_20170219.ini",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_MB85RC256V/examples/rcv_ini_file/SALT_INI_File_Issues.md",
-		"/C/Users/BAB/Documents/code/Arduino/SALT_reptile/SALT_reptile.ino",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_LCM300Q/examples/LCM300Q_MonitorDemo/LCM300Q_MonitorDemo.ino",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_LCM300Q/Systronix_LCM300Q.cpp",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_LCM300Q/Systronix_LCM300Q.h",
@@ -473,8 +483,7 @@
 		"/C/Users/BAB/Documents/code/Arduino/SALT_CodeUpdates/b2bwec_20160808.ini",
 		"/C/Users/BAB/AppData/Roaming/Sublime Text 3/Packages/User/C++.sublime-settings",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/SALT_settings/SALT_settings.cpp",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_MB85RC256V/examples/fram_test/fram_test.ino",
-		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_MB85RC256V/examples/rcv_ini_file/'SALT_INI_File_Issues'"
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_MB85RC256V/examples/fram_test/fram_test.ino"
 	],
 	"find":
 	{
@@ -492,6 +501,14 @@
 		"case_sensitive": true,
 		"find_history":
 		[
+			"resetBus",
+			"I2C_AUTO_RETRY",
+			"busReset",
+			"I2C_TIMEOUT",
+			"TIMEOUT",
+			"I2C_ARB",
+			"successful_count",
+			"successful",
 			"I2C_AUTO_RETRY",
 			"I2C_ADDR_NAK",
 			"NAK",
@@ -611,15 +628,7 @@
 			"schedule",
 			"menu_clock",
 			"menu_time",
-			"menu_time_show",
-			"menu_clock_show",
-			"menu_clock",
-			"menu_dawndusk",
-			"menu_dawn",
-			"menu_dawndusk",
-			"menu_schedule",
-			"dawn",
-			"clock"
+			"menu_time_show"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -764,7 +773,7 @@
 	"groups":
 	[
 		{
-			"selected": 9,
+			"selected": 7,
 			"sheets":
 			[
 				{
@@ -780,8 +789,8 @@
 						"selection":
 						[
 							[
-								13231,
-								13217
+								13217,
+								13231
 							]
 						],
 						"settings":
@@ -793,10 +802,10 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2209.0,
+						"translation.y": 2377.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 9,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
@@ -812,23 +821,23 @@
 						"selection":
 						[
 							[
-								35628,
-								35642
+								40000,
+								40000
 							]
 						],
 						"settings":
 						{
 							"color_scheme": "Packages/User/Color Highlighter/themes/Cobalt.tmTheme",
-							"function_name_status_row": 794,
+							"function_name_status_row": 900,
 							"syntax": "Packages/C++/C++.sublime-syntax",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 10609.0,
+						"translation.y": 11981.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 8,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
@@ -858,7 +867,7 @@
 						"translation.y": 2562.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 7,
 					"type": "text"
 				},
 				{
@@ -888,7 +897,7 @@
 						"translation.y": 966.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 7,
+					"stack_index": 10,
 					"type": "text"
 				},
 				{
@@ -919,7 +928,7 @@
 						"translation.y": 2310.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 3,
+					"stack_index": 9,
 					"type": "text"
 				},
 				{
@@ -950,7 +959,7 @@
 						"translation.y": 1890.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
@@ -959,29 +968,29 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5911,
+						"buffer_size": 6742,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2686,
-								2708
+								1644,
+								1387
 							]
 						],
 						"settings":
 						{
 							"color_scheme": "Packages/User/Color Highlighter/themes/Cobalt.tmTheme",
-							"function_name_status_row": 81,
+							"function_name_status_row": 46,
 							"syntax": "Packages/C++/C++.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 294.0,
+						"translation.y": 126.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 5,
+					"stack_index": 2,
 					"type": "text"
 				},
 				{
@@ -990,29 +999,29 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9481,
+						"buffer_size": 10508,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								5549,
-								5549
+								8791,
+								8791
 							]
 						],
 						"settings":
 						{
 							"color_scheme": "Packages/User/Color Highlighter/themes/Cobalt.tmTheme",
-							"function_name_status_row": 199,
+							"function_name_status_row": 295,
 							"syntax": "Packages/C++/C++.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 1075.0,
+						"translation.y": 3903.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
@@ -1021,33 +1030,63 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 4915,
+						"buffer_size": 5811,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3708,
-								3758
+								1996,
+								1996
 							]
 						],
 						"settings":
 						{
-							"function_name_status_row": 148,
+							"function_name_status_row": 72,
 							"syntax": "Packages/C++/C++.sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 1554.0,
+						"translation.y": 235.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 1,
 					"type": "text"
 				},
 				{
 					"buffer": 9,
+					"file": "examples/PCA9548A_Test/PCA9548A_Test_logs.md",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1231,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1231,
+								1231
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"function_name_status_row": 26,
+							"syntax": "Packages/Markdown/Markdown.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 10,
 					"file": "examples/Mux_and_Temps/Mux_and_Temps.ino",
 					"semi_transient": false,
 					"settings":
@@ -1066,7 +1105,7 @@
 						"settings":
 						{
 							"color_scheme": "Packages/User/Color Highlighter/themes/Cobalt.tmTheme",
-							"function_name_status_row": -1,
+							"function_name_status_row": 146,
 							"syntax": "Packages/C++/C++.sublime-syntax",
 							"tab_size": 2,
 							"translate_tabs_to_spaces": true
@@ -1075,7 +1114,7 @@
 						"translation.y": 2016.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 6,
 					"type": "text"
 				}
 			]

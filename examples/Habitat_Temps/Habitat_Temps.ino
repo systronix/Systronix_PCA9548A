@@ -45,7 +45,17 @@ uint8_t config_tmp275;
 
 Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);    
 
-Systronix_TMP275 Mux0Temp1(TMP275_SLAVE_ADDR_1);
+/**
+TMP102 on board SALT has same address as TMP275 0 so don't use that
+*/
+
+Systronix_TMP275 Mux0Temp2(TMP275_SLAVE_ADDR_2);  // D1 C1 outside
+Systronix_TMP275 Mux0Temp3(TMP275_SLAVE_ADDR_3);  // D1 C1 inside
+Systronix_TMP275 Mux0Temp4(TMP275_SLAVE_ADDR_4);
+Systronix_TMP275 Mux0Temp5(TMP275_SLAVE_ADDR_5);
+Systronix_TMP275 Mux0Temp6(TMP275_SLAVE_ADDR_6);
+Systronix_TMP275 Mux0Temp7(TMP275_SLAVE_ADDR_7);
+
 Systronix_TMP275 Mux1Temp1(TMP275_SLAVE_ADDR_1);
 Systronix_TMP275 Mux2Temp1(TMP275_SLAVE_ADDR_1);
 
@@ -95,7 +105,7 @@ void setup(void)
 
   config_value = PCA9548A_CHAN_0_ENABLE;  // 
 
-  // initialize MUX
+  // initialize MUX, don't proceed unless succeeds
   do
   {
     iter++;
@@ -121,7 +131,10 @@ void setup(void)
     {
       Serial.printf("OK!\r\n");
     }
-  } while (SUCCESS != stat);    
+  } while (SUCCESS != stat);      
+
+
+
 
   if ( PCA9548A_70.base_clipped() )
     Serial.printf(" base address out of range, clipped to 0x%u", PCA9548A_70.base_address());
@@ -130,7 +143,11 @@ void setup(void)
   Serial.print(dtime/1000);
   Serial.print(" sec, ");
  
-  Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose output.\r\n\n");
+  Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose");
+#if defined I2C_T3_H 
+  Serial.printf(", r/R for Wire.resetBus()");
+#endif
+  Serial.printf("\r\n\n");
 
   delay(2000);
 
@@ -163,16 +180,20 @@ void loop(void)
       case 'q':
       case 'Q':
         verbose = false;
-      break;
+        break;
 
       case 'v':
       case 'V':
         verbose = true;
-      break;
+        break;
 
-      //ignore others
-    }
-  }
+#if defined I2C_T3_H 
+      case 'r':
+      case 'R':     
+        Serial.printf("\nWill call resetBus!\r\n");
+        Wire.resetBus();
+        break;
+#endif
 
 
   digitalWrite(LED_BUILTIN,HIGH); // LED on
@@ -194,7 +215,7 @@ void loop(void)
     if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
   }
 
-  // Init Mux0Temp1 Sensors
+  // Init Mux0Temp7 Sensors
   stat = Mux0Temp1.init(TMP275_CFG_RES12);
   if (SUCCESS != stat) Serial.printf(" Mux0Temp1 init failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.ret_val);
 
@@ -208,6 +229,14 @@ void loop(void)
   if (stat != SUCCESS) Serial.printf("Mux0Temp1 error, stat=%u\r\n", stat);
   temp = Mux0Temp1.raw12_to_c(rawtemp);
   Serial.printf ("Mux0Temp1 %6.4f C\r\n", temp);
+
+
+
+
+
+
+
+
 
   // Enable Mux Channel 1
   stat = PCA9548A_70.controlWrite(PCA9548A_CHAN_1_ENABLE);

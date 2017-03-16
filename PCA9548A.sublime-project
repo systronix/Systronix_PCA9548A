@@ -21,6 +21,12 @@
 		},
 		{
 			"path": "C:\\Users\\BAB\\Documents\\code\\Arduino\\libraries\\SALT_UI"
+		},
+		{
+			"path": "C:\\Users\\BAB\\Documents\\code\\Arduino\\libraries\\Wire"
+		},
+		{
+			"path": "C:\\Users\\BAB\\Documents\\code\\Arduino\\libraries\\SALT_utilities"
 		}
 	]
 }

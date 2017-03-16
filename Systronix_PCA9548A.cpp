@@ -77,7 +77,7 @@ uint8_t Systronix_PCA9548A::base_address()
 void Systronix_PCA9548A::begin(void)
 	{
 	Wire.begin();			// join I2C as master
-#if defined I2C_T_H	
+#if defined I2C_T3_H	
 	Wire.setDefaultTimeout(10000);	// 1000 usec = 1 msec; 10,000 = 10 msec seems too long.
 #endif
 
@@ -119,7 +119,7 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 			{					
 			// unsuccessful i2c transaction, get more detail
 			// Serial.printf("init endTransmission failed with return of 0x%.2X\r\n", error.ret_val);
-#if defined I2C_T_H				
+#if defined I2C_T3_H				
 			error.ret_val = Wire.status();			// detailed status value enum 0..10
 			// return = I2C_WAITING, I2C_SENDING, I2C_SEND_ADDR, I2C_RECEIVING, I2C_TIMEOUT, I2C_ADDR_NAK, I2C_DATA_NAK, I2C_ARB_LOST, I2C_BUF_OVF, I2C_SLAVE_TX, I2C_SLAVE_RX
 			// Serial.printf("init endTransmission status value 0x%.2X\r\n", error.ret_val);
@@ -128,10 +128,10 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 			}
 		else
 			{
-				// completely successful
-				error.successful_count++;
-				_control_reg = control;					// shadow copy to remember this setting
-				return SUCCESS;
+			// completely successful
+			error.successful_count++;
+			_control_reg = control;					// shadow copy to remember this setting
+			return SUCCESS;
 			}
 		}
 										
@@ -145,6 +145,8 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 
 Write to the 8-bit control register
 returns 0 if no error, positive values for NAK errors
+
+Prevent setting more than one bit?
 
 */
 
@@ -165,7 +167,7 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 		// return: 0=success, 1=data too long, 2=recv addr NACK, 3=recv data NACK, 4=other error
 		if (error.ret_val)
 			{
-#if defined I2C_T_H					
+#if defined I2C_T3_H					
 			error.ret_val = Wire.status();			// to get error value
 #endif			
 			tally_errors (error.ret_val);				// increment the appropriate counter
@@ -191,14 +193,22 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 
 uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 	{
-#if defined I2C_T_H	
-	if (1 != Wire.requestFrom(_base, 1, I2C_STOP))
+	uint8_t read_count;
+
+#if defined I2C_T3_H	
+	read_count = Wire.requestFrom(_base, 1, I2C_STOP);
+	if (read_count != 1)
 #else
-	if (1 != Wire.requestFrom(_base, (uint8_t)1, true))		// Wire lib version
+	read_count = Wire.requestFrom(_base, (uint8_t)1, (uint8_t)1); 		// Wire lib version
+	if (read_count != 1 )		
 #endif		
 		{
-#if defined I2C_T_H	
+		Serial.printf("control read got %u bytes, not 1\r\n", read_count);
+#if defined I2C_T3_H	
 		error.ret_val = Wire.status();				// to get error value
+#else
+		// PJRC Wire lib
+		error.ret_val = 1;		// force value for data length error
 #endif
 		tally_errors (error.ret_val);					// increment the appropriate counter
 		return FAIL;
@@ -210,7 +220,7 @@ uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 	}
 
 
-/**---------------------------< VERIFY_SIMPLE >----------------------------------
+/**---------------------------< testSimple >-----------------------------------
 	@brief  Confirm slave is still present and responding as expected.
 
 	Read the control reg. Then write test patterns to it, reading to verify.
@@ -222,33 +232,46 @@ uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 
 	return SUCCESS if all was OK, !SUCCESS if any problem
 	error struct has details of error(s) if any
+
+	TODO this test is not as useful as I had hoped. Get rid of it or make it
+	useful
 -----------------------------------------------------------------------------*/
 
 uint8_t Systronix_PCA9548A::testSimple (void)
 {
-	uint8_t control_read_val = 0;
-	uint8_t control_original = 0;
-	uint8_t stat = 0;
-	uint8_t test_write = 0xA5;
+	// uint8_t control_read_val = 0;
+	// uint8_t control_original = 0;
+	// uint8_t stat = 0;
+	// uint8_t test_write = 0xA5;		// can enable multiple mux outputs at once
+	// uint8_t bad_count = 0;
 
-	stat = controlRead(&control_original);
-	if (SUCCESS != stat) return !SUCCESS;
+	// stat = controlRead(&control_original);
+	// if (SUCCESS != stat) return !SUCCESS;		// if we can't even read why continue?
 
-	stat = controlWrite(test_write);
-	if (SUCCESS != stat) return !SUCCESS;
-	stat = controlRead(&control_read_val);
-	if (SUCCESS != stat) return !SUCCESS;
-	if (test_write != control_read_val) return !SUCCESS;
+	// For now bypass this until I can write a better test
+	// // write test pattern
+	// stat = controlWrite(test_write);
+	// if (SUCCESS != stat) bad_count++;
 
-	test_write = ~test_write;
-	stat = controlWrite(test_write);
-	if (SUCCESS != stat) return !SUCCESS;
-	stat = controlRead(&control_read_val);
-	if (SUCCESS != stat) return !SUCCESS;
-	if (test_write != control_read_val) return !SUCCESS;
+	// stat = controlRead(&control_read_val);
+	// if (SUCCESS != stat) bad_count++;
+	// if (test_write != control_read_val) 
+	// {
+	// 	bad_count++;
+	// }
 
-	stat = controlWrite(control_original);
-	if (SUCCESS != stat) return !SUCCESS;
+	// // write test pattern complement
+	// // dangerous, ~0x01 is 0xFE which enables 7 channels and any pullups
+	// test_write = ~test_write;
+	// stat = controlWrite(test_write);
+	// if (SUCCESS != stat) return !SUCCESS;
+
+	// stat = controlRead(&control_read_val);
+	// if (SUCCESS != stat) return !SUCCESS;
+	// if (test_write != control_read_val) return !SUCCESS;
+
+	// stat = controlWrite(control_original);
+	// if (SUCCESS != stat) return !SUCCESS;
 
 	return SUCCESS;
 }
@@ -268,6 +291,19 @@ uint8_t Systronix_PCA9548A::testSimple (void)
 	TODO these error values don't match all the 0..9 status() enum e.g. timeout has a value of 3
 	part of the problem is mashing up status() codes and Wire.write() 
 
+	From 29Dec16 release i2c_t3.h, now 11 status codes
+	enum i2c_status   {I2C_WAITING,
+	                   I2C_SENDING,
+	                   I2C_SEND_ADDR,
+	                   I2C_RECEIVING,
+	                   I2C_TIMEOUT,
+	                   I2C_ADDR_NAK,
+	                   I2C_DATA_NAK,
+	                   I2C_ARB_LOST,
+	                   I2C_BUF_OVF,
+	                   I2C_SLAVE_TX,
+	                   I2C_SLAVE_RX};	
+
 	Detailed status (not all are errors!) 11 values enum 0..10 returned from status()
 		0..3 	I2C_WAITING, I2C_SENDING, I2C_RECEIVING, I2C_SEND_ADDR	- not errors, but cycle in progress when Teensy is master
 		4 		I2C_TIMEOUT, 								- error
@@ -277,19 +313,8 @@ uint8_t Systronix_PCA9548A::testSimple (void)
 		9-10	I2C_SLAVE_TX, I2C_SLAVE_RX;					- not errors? Only apply to Teensy slave mode?
 	0..2 can't happen if status() called after endTransmission since it blocks until cycle is complete
 
-From 29Dec16 release i2c_t3.h, now 11 status codes
-enum i2c_status   {I2C_WAITING,
-                   I2C_SENDING,
-                   I2C_SEND_ADDR,
-                   I2C_RECEIVING,
-                   I2C_TIMEOUT,
-                   I2C_ADDR_NAK,
-                   I2C_DATA_NAK,
-                   I2C_ARB_LOST,
-                   I2C_BUF_OVF,
-                   I2C_SLAVE_TX,
-                   I2C_SLAVE_RX};
-
+	If we are not using i2c_t3, then Wire errors are not so well-defined:
+	0=success (we change this to mean incomplete write, 1=data too long, 2=recv addr NACK, 3=recv data NACK, 4=other error
 */
 
 void Systronix_PCA9548A::tally_errors (uint8_t err)
@@ -301,22 +326,34 @@ void Systronix_PCA9548A::tally_errors (uint8_t err)
 			error.incomplete_write_count++;
 			break;
 		case 1:					// data too long from endTransmission() (rx/tx buffers are 259 bytes - slave addr + 2 cmd bytes + 256 data)
-		case 8:					// buffer overflow from call to status() (read - transaction never started)
 			error.data_len_error_count++;
 			break;
-		case 2:					// slave did not ack address (write)
-		case 5:					// from call to status() (read)
+		case 4:					 
+#if defined I2C_T3_H		
+			error.timeout_count++;			// error 4 = i2c_t3 timeout
+#else
+			error.other_error_count++;		// error 4 = Wire "other error"
+#endif
+			break;
+		case 2:
+		case 5:
 			error.rcv_addr_nack_count++;
 			break;
-		case 3:					// slave did not ack data (write)
-		case 6:					// from call to status() (read)
+		case 3:
+		case 6:
 			error.rcv_data_nack_count++;
 			break;
-		case 4:					// arbitration lost (write) or timeout (read/write) or auto-reset failed
-								// or "other" error from Wire.endTransmission
 		case 7:					// arbitration lost from call to status() (read)
-			error.other_error_count++;
+			error.arbitration_lost_count++;
 			break;
+		case 8:
+			error.buffer_overflow_count++;
+			break;
+		case 9:
+		case 10:
+			error.other_error_count++;		// i2c_t3 these are not errors, I think
+			break;
+		case 11:
 		default:
 			error.unknown_error_count++;
 			break;

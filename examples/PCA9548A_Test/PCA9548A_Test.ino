@@ -45,6 +45,7 @@ void setup(void)
 
 
   uint8_t stat = 0;
+  uint16_t iter = 0;
 
   pinMode(LED_BUILTIN,OUTPUT);    // LED
 
@@ -55,22 +56,60 @@ void setup(void)
   while((!Serial) && (millis()<10000));    // wait until serial monitor is open or timeout, which seems to fall through
  
   Serial.printf("\r\nPCA9548A Library Test Code at 0x%.2X\r\n", PCA9548A_70.base_address());
-   
+
+  Serial.printf("Build %s - %s\r\n%s\r\n", __DATE__, __TIME__, __FILE__);
+
+#if defined(__MKL26Z64__)
+  Serial.println( "CPU is T_LC");
+#elif defined(__MK20DX256__)
+  Serial.println( "CPU is T_3.1/3.2");
+#elif defined(__MK20DX128__)
+  Serial.println( "CPU is T_3.0");
+#elif defined(__MK64FX512__)
+  Serial.println( "CPU is T_3.5");
+#elif defined(__MK66FX1M0__)
+  Serial.println( "CPU is T_3.6");
+#endif
+  Serial.print( "F_CPU =");   Serial.println( F_CPU );
+  
+#if defined I2C_T3_H 
+  Serial.printf("Using i2c_t3 I2C library for Teensy\r\n");
+#endif
   
   // start PCA9548A library
   PCA9548A_70.begin();
 
   config_value = PCA9548A_CHAN_0_ENABLE;  // 
 
-  // initialize 
-	stat = PCA9548A_70.init(config_value);
-  Serial.printf(" Init control reg to 0x%.2X\r\n", config_value); 
-  if (SUCCESS != stat)
+  // initialize MUX, don't proceed unless succeeds
+  do
   {
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf(" Init failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
-  }
- 
+    iter++;
+  	stat = PCA9548A_70.init(config_value);
+    Serial.printf(" Attempt #%u: Init control reg to 0x%.2X - ", iter, config_value); 
+    if (SUCCESS != stat)
+    {
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+      Serial.printf("failed - returned 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+#if defined I2C_T3_H 
+    // reset I2C just to be safe
+    // we may have interrupted a message in process of loading new code or Teensy reset
+    Wire.resetBus();
+    Serial.printf("Tried resetBus()\r\n");
+#else
+    // TODO toggle SDA 10X while SCL is high to force any incomplete I2C message to finish
+    // how to do this without clobbering I2C library already set up?
+    Serial.printf("TODO: resetBus() for Wire library!\r\n");
+#endif 
+    delay(1000);     
+    }
+    else
+    {
+      Serial.printf("OK!\r\n");
+    }
+  } while (SUCCESS != stat);    
+//  } while ((SUCCESS != stat) && (3>iter++));
+
 
   if (PCA9548A_70.base_clipped() )
     Serial.printf(" base address out of range, clipped to 0x%u", PCA9548A_70.base_address());
@@ -138,25 +177,27 @@ void loop(void)
   digitalWrite(LED_BUILTIN,HIGH); // LED on
   for (uint8_t tui = 0; tui <= 7; tui++)
   {
-    if (verbose) Serial.printf("@%.4u ch %u ", millis(), tui);
-    stat = PCA9548A_70.controlWrite(PCA9548A_70.channel[tui]);
-    
-    if (SUCCESS != stat)
-    {
-      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
-      delay(dtime/2); // don't blast repeat failures too quickly
-      break;
-    }
+    if (verbose) Serial.printf("@%.4u ch %u", millis(), tui);
 
-    stat = PCA9548A_70.testSimple();
+    stat = PCA9548A_70.controlWrite(PCA9548A_70.channel[tui]);
     if (SUCCESS != stat)
     {
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("simple test in middle of write/read loop failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+      Serial.printf("control write of %u failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.error.ret_val, text_ptr);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
+    else if (verbose) Serial.print(".");  // period to show progress
+
+    // this test just confuses matters, bypass it for now
+    // stat = PCA9548A_70.testSimple();
+    // if (SUCCESS != stat)
+    // {
+    //   text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+    //   Serial.printf("simple test in middle of write/read loop failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+    //   delay(dtime/2); // don't blast repeat failures too quickly
+    //   break;
+    // }
 
     stat = PCA9548A_70.controlRead(&control_read_val);
     if (SUCCESS != stat)
@@ -166,13 +207,15 @@ void loop(void)
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
+    else if (verbose) Serial.print(".");  // period to show progress
 
     if (control_read_val != PCA9548A_70.channel[tui])
     {
-      Serial.printf("Error: control value=0x%.2X\r\n", control_read_val);
+      Serial.printf("Error: control read value=0x%.2X\r\n", control_read_val);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
+    else if (verbose) Serial.print(".");  // period to show progress
 
 
     // no error in this loop iter

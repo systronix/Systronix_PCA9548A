@@ -40,16 +40,16 @@ This library was developed and tested on Teensy3 (ARM CortexM4) with I2C_T3 libr
 
 #include <Arduino.h>
 
-#include <Wire.h>	// try Paul's new Wire lib
+//#include <Wire.h>	// try Paul's new Wire lib
 
 // Use Teensy improved I2C library
-//#if defined (__MK20DX256__) || defined (__MK20DX128__) 	// Teensy 3.1 or 3.2 || Teensy 3.0
+// #if defined (__MK20DX256__) || defined (__MK20DX128__) 	// Teensy 3.1 or 3.2 || Teensy 3.0
 // from https://forum.pjrc.com/threads/42411-Communication-impossible-in-I2C-tennsy3-6?p=135630&viewfull=1#post135630
-// #if defined(KINETISK) || defined(KINETISL)	// Teensy 3.X and LC
-// #include <i2c_t3.h>		
-// #else
-// #include <Wire.h>	// for AVR I2C library
-// #endif
+#if defined(KINETISK) || defined(KINETISL)	// Teensy 3.X and LC
+#include <i2c_t3.h>		
+#else
+#include <Wire.h>	// for AVR I2C library
+#endif
 
 #if not defined SUCCESS
 #define		SUCCESS	0		// best to test for !SUCCESS
@@ -133,6 +133,7 @@ class Systronix_PCA9548A
 		Note each literal string has a null terminator added by C compiler.
 		See NAP_UI_key_defs.h for similar
 		*/
+#if defined I2C_T3_H 		
 		const char * const status_text[11] =
 		{
 			"I2C_WAITING", 
@@ -147,6 +148,18 @@ class Systronix_PCA9548A
 			"I2C_SLAVE_TX", 
 			"I2C_SLAVE_RX"
 		};
+#else
+		// Wire.h returns from endTransmission
+		// 0=success, 1=data too long, 2=recv addr NACK, 3=recv data NACK, 4=other error
+		const char * const status_text[5] =
+		{
+			"Success",		// TODO not an error, we should not tally it! 
+			"Data length",
+			"Receive addr NAK", 
+			"Receive data NAK",
+			"Other error"
+		};		
+#endif
 
 		/** error stucture
 		Note that this can be written by a library user, so it could be cleared if desired as part of 
@@ -157,8 +170,11 @@ class Systronix_PCA9548A
 			uint8_t		ret_val;						// i2c_t3 library return value from most recent transaction
 			uint32_t	incomplete_write_count;			// Wire.write failed to write all of the data to tx_buffer
 			uint32_t	data_len_error_count;			// data too long
+			uint32_t	timeout_count;						// slave response took too long
 			uint32_t	rcv_addr_nack_count;			// slave did not ack address
 			uint32_t	rcv_data_nack_count;			// slave did not ack data
+			uint32_t	arbitration_lost_count;
+			uint32_t	buffer_overflow_count;
 			uint32_t	other_error_count;				// arbitration lost or timeout
 			uint32_t	unknown_error_count;
 			uint32_t	total_error_count;				// quick check to see if any have happened
