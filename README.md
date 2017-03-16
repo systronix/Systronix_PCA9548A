@@ -21,6 +21,7 @@ This device lets you take one I2C bus and switch it to up to 8 other I2C branche
 
 ## Examples
 ### PCA9548A_Test.ino 
+[Test Logs Here](https://github.com/systronix/Systronix_PCA9548A/blob/master/examples/PCA9548A_Test/PCA9548A_Test_logs.md)
 This test beats on the MUX pretty hard, setting each channel in turn active, with a nondestructive read/modify/write/restore test by calling testSimple()
  in the middle of every channel test. Output can be verbose or quiet by sending v or q to the serial monitor. For this example to work properly you want I2C_AUTO_RETRY
  and the resetBus counter included in my [minorly-revised i2c_t3 library](https://github.com/systronix/i2c_t3)
