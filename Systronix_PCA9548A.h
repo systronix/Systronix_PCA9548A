@@ -16,6 +16,13 @@
 
 */
 
+/**---------------------------< REVISIONS >----------------------------------
+
+2017 Mar 15	bboyes	error struct names and variables to properly match current 
+Wire.status() return values. 
+
+-----------------------------------------------------------------------------*/
+
 
 /**---------------------------< TODO LIST >------------------------------------
 
@@ -193,7 +200,7 @@ class Systronix_PCA9548A
 
 		uint8_t		controlWrite (uint8_t pointer);		// 
 		uint8_t		controlRead (uint8_t *data);		// read 8-bit control register
-		uint8_t		testSimple (void);					// simple nondestructive test of control read/write
+		uint8_t		enableManyTest (void);				// TODO finish this 
 		uint8_t		resetAll (void);					// reset device if possible, re-init, clear all errors
 
 	private:

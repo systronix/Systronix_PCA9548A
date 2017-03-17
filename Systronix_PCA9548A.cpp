@@ -5,6 +5,15 @@
  *	  Author: BAB
  */
 
+/**---------------------------< REVISIONS >----------------------------------
+
+2017 Mar 15	bboyes	Changed tally_errors to properly record current Wire.status()
+return values. Disabled simpleTest because it is not so simple and could return
+with the config register changed in the middle of another loop which requires it
+to be not changed.
+
+-----------------------------------------------------------------------------*/
+
 #include <Systronix_PCA9548A.h>	
 
 
@@ -221,7 +230,7 @@ uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 
 
 /**---------------------------< testSimple >-----------------------------------
-	@brief  Confirm slave is still present and responding as expected.
+	@brief  Enable multiple MUX outputs and see if we can still access control reg
 
 	Read the control reg. Then write test patterns to it, reading to verify.
 	Patterns are 0xA5 and its complement 0x5A
@@ -233,45 +242,46 @@ uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 	return SUCCESS if all was OK, !SUCCESS if any problem
 	error struct has details of error(s) if any
 
-	TODO this test is not as useful as I had hoped. Get rid of it or make it
-	useful
+	TODO finish this.
 -----------------------------------------------------------------------------*/
 
-uint8_t Systronix_PCA9548A::testSimple (void)
+uint8_t Systronix_PCA9548A::enableManyTest (void)
 {
-	// uint8_t control_read_val = 0;
-	// uint8_t control_original = 0;
-	// uint8_t stat = 0;
-	// uint8_t test_write = 0xA5;		// can enable multiple mux outputs at once
-	// uint8_t bad_count = 0;
+	uint8_t control_read_val = 0;
+	uint8_t control_original = 0;
+	uint8_t stat = 0;
+	uint8_t test_write = 0xA5;		// can enable multiple mux outputs at once
+	uint8_t bad_count = 0;
 
-	// stat = controlRead(&control_original);
-	// if (SUCCESS != stat) return !SUCCESS;		// if we can't even read why continue?
+	Serial.printf("enableManyTest is not complete! Use not recommended!\r\n");
 
-	// For now bypass this until I can write a better test
-	// // write test pattern
-	// stat = controlWrite(test_write);
-	// if (SUCCESS != stat) bad_count++;
+	stat = controlRead(&control_original);
+	if (SUCCESS != stat) return !SUCCESS;		// if we can't even read why continue?
 
-	// stat = controlRead(&control_read_val);
-	// if (SUCCESS != stat) bad_count++;
-	// if (test_write != control_read_val) 
-	// {
-	// 	bad_count++;
-	// }
+	// write test pattern
+	stat = controlWrite(test_write);
+	if (SUCCESS != stat) bad_count++;
 
-	// // write test pattern complement
-	// // dangerous, ~0x01 is 0xFE which enables 7 channels and any pullups
-	// test_write = ~test_write;
-	// stat = controlWrite(test_write);
-	// if (SUCCESS != stat) return !SUCCESS;
+	stat = controlRead(&control_read_val);
+	if (SUCCESS != stat) bad_count++;
+	if (test_write != control_read_val) 
+	{
+		bad_count++;
+	}
 
-	// stat = controlRead(&control_read_val);
-	// if (SUCCESS != stat) return !SUCCESS;
-	// if (test_write != control_read_val) return !SUCCESS;
+	// write test pattern complement
+	// dangerous, ~0x01 is 0xFE which enables 7 channels and any pullups on them,
+	// could prevent slave driving low against such a large pullup load
+	test_write = ~test_write;
+	stat = controlWrite(test_write);
+	if (SUCCESS != stat) return !SUCCESS;
 
-	// stat = controlWrite(control_original);
-	// if (SUCCESS != stat) return !SUCCESS;
+	stat = controlRead(&control_read_val);
+	if (SUCCESS != stat) return !SUCCESS;
+	if (test_write != control_read_val) return !SUCCESS;
+
+	stat = controlWrite(control_original);
+	if (SUCCESS != stat) return !SUCCESS;
 
 	return SUCCESS;
 }

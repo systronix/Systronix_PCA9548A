@@ -189,16 +189,6 @@ void loop(void)
     }
     else if (verbose) Serial.print(".");  // period to show progress
 
-    // this test just confuses matters, bypass it for now
-    // stat = PCA9548A_70.testSimple();
-    // if (SUCCESS != stat)
-    // {
-    //   text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    //   Serial.printf("simple test in middle of write/read loop failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
-    //   delay(dtime/2); // don't blast repeat failures too quickly
-    //   break;
-    // }
-
     stat = PCA9548A_70.controlRead(&control_read_val);
     if (SUCCESS != stat)
     {
@@ -222,6 +212,15 @@ void loop(void)
     if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
 
   } // end of for loop
+
+  // stat = PCA9548A_70.enableManyTest();
+  //   if (SUCCESS != stat)
+  //   {
+  //     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+  //     Serial.printf("enableManyTest failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+  //     delay(dtime/2); // don't blast repeat failures too quickly
+  //     break;
+  //   }  
 
   digitalWrite(LED_BUILTIN,LOW); // LED off+
 

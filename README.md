@@ -15,9 +15,14 @@ This device lets you take one I2C bus and switch it to up to 8 other I2C branche
  - TI has the TCA prefix. NXP uses PCA. They should be interchangeable and there may be other vendors. [TCA9548A data sheet](http://www.ti.com/product/tca9548a) and [PCA95458A datasheet](www.nxp.com/documents/data_sheet/PCA9548A.pdf)
 
 ## PCA9548A Cautions or Issues
- - you can select more than out active output at a time
+ - you can select more than one active output at a time, and the total resistance and capacitance of all enabled
+ network segments adds together and appears on the conglomerated network. Example: setting control to 0xFF enables
+ *all* mux outputs simultaneously. 
+ - Slaves with the same address on different simultaneously-enabled channels will clash.
  - this device is not a buffer, so it does not isolate capacitance between input and active output(s).
  - beware total I2C net loading which is the sum of input and output nets, including capacitance, and pullups.
+ - if too many outputs are enabled and the network is overloaded,, it may not be possible to access the control register
+ to get out of this state. The only solution would be a POR or using the mux reset input.
 
 ## Examples
 ### PCA9548A_Test.ino 
