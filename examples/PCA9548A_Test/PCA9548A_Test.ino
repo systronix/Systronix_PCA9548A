@@ -183,7 +183,7 @@ void loop(void)
     if (SUCCESS != stat)
     {
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("control write of %u failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.error.ret_val, text_ptr);
+      Serial.printf("control write to ch %u of %u failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.channel[tui], PCA9548A_70.error.ret_val, text_ptr);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
@@ -209,7 +209,7 @@ void loop(void)
 
 
     // no error in this loop iter
-    if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
+    if (verbose) Serial.printf("OK ch %u control=0x%.2X\r\n", tui, control_read_val);
 
   } // end of for loop
 
