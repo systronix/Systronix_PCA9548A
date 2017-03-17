@@ -3,6 +3,38 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
+### 2017 MAr 16 day
+```
+	et:79847  Good:367445969  4601/sec
+	et:79848  Good:367450577  4601/sec
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:79849  Good:367454294  4601/sec  bad:1  resetBus: 0
+	et:79850  Good:367457478  4601/sec  bad:1  resetBus: 0
+	...
+	after a reset
+	'''
+	et:213  Good:967105  4583/sec
+	et:214  Good:971713  4583/sec
+	control write of 5 failed with return of 0x04: I2C_TIMEOUT
+	et:215  Good:975947  4581/sec  bad:1  resetBus: 0
+	et:216  Good:978571  4572/sec  bad:1  resetBus: 0
+	...
+	et:2079  Good:9551899  4598/sec  bad:1  resetBus: 0
+	et:2080  Good:9556491  4598/sec  bad:1  resetBus: 0
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:2081  Good:9558800  4597/sec  bad:2  resetBus: 0
+	et:2082  Good:9563392  4597/sec  bad:2  resetBus: 0
+	...
+	et:2467  Good:11335120  4598/sec  bad:2  resetBus: 0
+	et:2468  Good:11339712  4598/sec  bad:2  resetBus: 0
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:2469  Good:11342011  4597/sec  bad:3  resetBus: 0
+	et:2470  Good:11346619  4597/sec  bad:3  resetBus: 0
+	...
+```
 ### 2017 Mar 15 overnight
 ```
 	PCA9548A Library Test Code at 0x70
