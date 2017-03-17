@@ -34,6 +34,11 @@
 	et:2469  Good:11342011  4597/sec  bad:3  resetBus: 0
 	et:2470  Good:11346619  4597/sec  bad:3  resetBus: 0
 	...
+	et:18490  Good:85067995  4601/sec  bad:3  resetBus: 0
+	et:18491  Good:85072603  4601/sec  bad:3  resetBus: 0
+	control write of 7 failed with return of 0x06: I2C_DATA_NAK
+	et:18492  Good:85075385  4601/sec  bad:4  resetBus: 0
+	et:18493  Good:85079497  4601/sec  bad:4  resetBus: 0	
 ```
 ### 2017 Mar 15 overnight
 ```

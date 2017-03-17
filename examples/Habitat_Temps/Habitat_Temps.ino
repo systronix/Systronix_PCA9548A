@@ -238,8 +238,8 @@ void loop(void)
   temp=0.0;
   stat = Mux0Temp7.register16Read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp7 error, stat=%u\r\n", stat);
-  temp = Mux0Temp7.raw12_to_c(rawtemp);
-  Serial.printf ("Mux0Temp7 %6.4f C\r\n", temp);
+  temp = Mux0Temp7.raw12_to_f(rawtemp);
+  Serial.printf ("Mux0Temp7 %6.4f F\r\n", temp);
 
     // ------------------------------
   // Init Mux0Temp6 Sensors
@@ -255,8 +255,8 @@ void loop(void)
   temp=0.0;
   stat = Mux0Temp6.register16Read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp6 error, stat=%u\r\n", stat);
-  temp = Mux0Temp6.raw12_to_c(rawtemp);
-  Serial.printf ("Mux0Temp6 %6.4f C\r\n", temp);  
+  temp = Mux0Temp6.raw12_to_f(rawtemp);
+  Serial.printf ("Mux0Temp6 %6.4f F\r\n", temp);  
 
   // ------------------------------
   // Init Mux0Temp5 Sensors
@@ -272,8 +272,8 @@ void loop(void)
   temp=0.0;
   stat = Mux0Temp5.register16Read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp5 error, stat=%u\r\n", stat);
-  temp = Mux0Temp5.raw12_to_c(rawtemp);
-  Serial.printf ("Mux0Temp5 %6.4f C\r\n", temp);  
+  temp = Mux0Temp5.raw12_to_f(rawtemp);
+  Serial.printf ("Mux0Temp5 %6.4f F\r\n", temp);  
 
   // ------------------------------
   // Init Mux0Temp4 Sensors
@@ -289,8 +289,8 @@ void loop(void)
   temp=0.0;
   stat = Mux0Temp4.register16Read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp4 error, stat=%u\r\n", stat);
-  temp = Mux0Temp4.raw12_to_c(rawtemp);
-  Serial.printf ("Mux0Temp4 %6.4f C\r\n", temp);    
+  temp = Mux0Temp4.raw12_to_f(rawtemp);
+  Serial.printf ("Mux0Temp4 %6.4f F\r\n", temp);    
 
 
   // ------------------------------
@@ -307,8 +307,8 @@ void loop(void)
   temp=0.0;
   stat = Mux0Temp3.register16Read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp3 error, stat=%u\r\n", stat);
-  temp = Mux0Temp3.raw12_to_c(rawtemp);
-  Serial.printf ("Mux0Temp3 %6.4f C\r\n", temp);  
+  temp = Mux0Temp3.raw12_to_f(rawtemp);
+  Serial.printf ("Mux0Temp3 %6.4f F\r\n", temp);  
 
 
   // ------------------------------
@@ -325,8 +325,8 @@ void loop(void)
   temp=0.0;
   stat = Mux0Temp2.register16Read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp2 error, stat=%u\r\n", stat);
-  temp = Mux0Temp2.raw12_to_c(rawtemp);
-  Serial.printf ("Mux0Temp2 %6.4f C\r\n", temp);
+  temp = Mux0Temp2.raw12_to_f(rawtemp);
+  Serial.printf ("Mux0Temp2 %6.4f F\r\n", temp);
 
 
 
