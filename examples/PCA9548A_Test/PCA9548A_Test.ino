@@ -183,7 +183,7 @@ void loop(void)
     if (SUCCESS != stat)
     {
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("control write to ch %u of %u failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.channel[tui], PCA9548A_70.error.ret_val, text_ptr);
+      Serial.printf("control write to ch %u of 0x%.2X failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.channel[tui], PCA9548A_70.error.ret_val, text_ptr);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
@@ -197,15 +197,18 @@ void loop(void)
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
-    else if (verbose) Serial.print(".");  // period to show progress
-
-    if (control_read_val != PCA9548A_70.channel[tui])
+    else if (control_read_val != PCA9548A_70.channel[tui])
     {
-      Serial.printf("Error: control read value=0x%.2X\r\n", control_read_val);
+      // only check for correct value if I2C message was OK...
+      // ... if here, message was successful but somehow value is wrong
+      // since msg was OK error counters in lib didn't increment so do it here
+      Serial.printf("Error: control read value=0x%.2X\r\n", control_read_val);  
+      PCA9548A_70.error.data_value_error_count++;
+      PCA9548A_70.error.total_error_count++; 
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
-    else if (verbose) Serial.print(".");  // period to show progress
+    else if (verbose) Serial.print(".");  // no errors, period to show progress
 
 
     // no error in this loop iter

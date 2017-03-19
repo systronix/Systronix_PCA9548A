@@ -3,7 +3,103 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
-### 2017 MAr 16 day
+### 2017  Mar 18 day
+```
+	PCA9548A Library Test Code at 0x70
+	Build Mar 17 2017 - 15:46:07
+	C:\Users\BAB\Documents\code\Arduino\libraries\Systronix_PCA9548A\examples\PCA9548A_Test\PCA9548A_Test.ino
+
+	et:86046  Good:396674369  4610/sec
+	et:86047  Good:396678993  4610/sec
+	control write to ch 3 of 8 failed with return of 0x06: I2C_DATA_NAK
+	et:86048  Good:396681287  4610/sec  bad:1  resetBus: 1
+	Error: control read value=0x27
+	et:86049  Good:396683587  4610/sec  bad:1  resetBus: 1
+	et:86050  Good:396688211  4610/sec  bad:1  resetBus: 1
+
+	et:88941  Good:410015603  4610/sec  bad:1  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:88942  Good:410018760  4610/sec  bad:2  resetBus: 1
+
+	et:89087  Good:410686312  4610/sec  bad:2  resetBus: 1
+	control write to ch 6 of 64 failed with return of 0x05: I2C_ADDR_NAK
+	et:89088  Good:410689300  4610/sec  bad:3  resetBus: 1
+
+	et:89346  Good:411877972  4610/sec  bad:3  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+
+	et:93492  Good:430988585  4609/sec  bad:4  resetBus: 1
+	control write to ch 2 of 4 failed with return of 0x05: I2C_ADDR_NAK
+	et:93493  Good:430992941  4609/sec  bad:5  resetBus: 1	
+	et:89347  Good:411880793  4610/sec  bad:4  resetBus: 1
+
+	et:93659  Good:431756141  4609/sec  bad:5  resetBus: 1
+	control write to ch 6 of 64 failed with return of 0x06: I2C_DATA_NAK
+	et:93660  Good:431758457  4609/sec  bad:6  resetBus: 1	
+
+	et:94778  Good:436912393  4609/sec  bad:6  resetBus: 1
+	control write to ch 5 of 32 failed with return of 0x06: I2C_DATA_NAK
+	et:94779  Good:436916147  4609/sec  bad:7  resetBus: 1	
+
+	et:96994  Good:447118849  4609/sec  bad:8  resetBus: 1
+	control write to ch 7 of 128 failed with return of 0x05: I2C_ADDR_NAK
+	et:96995  Good:447121151  4609/sec  bad:9  resetBus: 1
+	control write to ch 7 of 128 failed with return of 0x06: I2C_DATA_NAK
+	et:96996  Good:447123453  4609/sec  bad:10  resetBus: 1	
+
+	et:97091  Good:447561389  4609/sec  bad:10  resetBus: 1
+	control write to ch 4 of 16 failed with return of 0x05: I2C_ADDR_NAK
+	et:97092  Good:447563701  4609/sec  bad:11  resetBus: 1
+
+	et:97182  Good:447978581  4609/sec  bad:11  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:97183  Good:447980880  4609/sec  bad:12  resetBus: 1
+
+	et:97725  Good:450479456  4609/sec  bad:12  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:97726  Good:450481767  4609/sec  bad:13  resetBus: 1
+
+	et:97780  Good:450730695  4609/sec  bad:13  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:97781  Good:450733006  4609/sec  bad:14  resetBus: 1
+	control write to ch 3 of 8 failed with return of 0x05: I2C_ADDR_NAK
+	et:97782  Good:450737332  4609/sec  bad:15  resetBus: 1
+
+	// TODO why didn't bad counter increment here?
+	// The read was an OK I2C message but the value was wrong. Interesting.
+	et:99210  Good:457318244  4609/sec  bad:15  resetBus: 1
+	Error: control read value=0x00
+	et:99211  Good:457320548  4609/sec  bad:15  resetBus: 1
+
+	et:99225  Good:457385092  4609/sec  bad:15  resetBus: 1
+	control write to ch 7 of 128 failed with return of 0x05: I2C_ADDR_NAK
+	et:99226  Good:457389282  4609/sec  bad:16  resetBus: 1
+
+	et:99384  Good:458115762  4609/sec  bad:16  resetBus: 1
+	Error: control read value=0xFF
+	et:99385  Good:458118060  4609/sec  bad:16  resetBus: 1	
+
+	et:99435  Good:458348556  4609/sec  bad:16  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:99436  Good:458350867  4609/sec  bad:17  resetBus: 1	
+
+	et:100845  Good:464846195  4609/sec  bad:17  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:100846  Good:464850794  4609/sec  bad:18  resetBus: 1	
+
+	et:101394  Good:467374714  4609/sec  bad:18  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:101395  Good:467378453  4609/sec  bad:19  resetBus: 1	
+```
+### 2017 Mar 16 day
 ```
 	et:79847  Good:367445969  4601/sec
 	et:79848  Good:367450577  4601/sec

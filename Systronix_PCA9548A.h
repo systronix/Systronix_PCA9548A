@@ -184,6 +184,7 @@ class Systronix_PCA9548A
 			uint32_t	buffer_overflow_count;
 			uint32_t	other_error_count;				// arbitration lost or timeout
 			uint32_t	unknown_error_count;
+			uint32_t	data_value_error_count;			// I2C message OK but value read was wrong; how can this be?
 			uint32_t	total_error_count;				// quick check to see if any have happened
 			uint32_t	successful_count;				// successful access cycle
 			} error;

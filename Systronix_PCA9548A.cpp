@@ -220,7 +220,7 @@ uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 		error.ret_val = 1;		// force value for data length error
 #endif
 		tally_errors (error.ret_val);					// increment the appropriate counter
-		return FAIL;
+		return !SUCCESS;
 		}
 
 	error.successful_count++;
@@ -329,7 +329,7 @@ uint8_t Systronix_PCA9548A::enableManyTest (void)
 
 void Systronix_PCA9548A::tally_errors (uint8_t err)
 	{
-	if (error.total_error_count < 0xFFFFFFFF) error.total_error_count++; 
+	if (error.total_error_count < 0xFFFFFFFF) error.total_error_count++; 	// every time here incr total error count
 	switch (err)
 		{
 		case 0:					// Wire.write failed to write all of the data to tx_buffer
