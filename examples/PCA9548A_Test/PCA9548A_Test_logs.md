@@ -3,6 +3,21 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
+### 2017 Mar 18 night
+```
+	// 2 errors in the first 16 minutes...
+	et:893  Good:4104129  4606/sec
+	control write to ch 3 of 0x08 failed with return of 0x06: I2C_DATA_NAK
+	et:894  Good:4107271  4604/sec  bad:1  resetBus: 0
+
+	et:922  Good:4235511  4603/sec  bad:1  resetBus: 0
+	control write to ch 3 of 0x08 failed with return of 0x06: I2C_DATA_NAK
+	et:923  Good:4238653  4602/sec  bad:2  resetBus: 0	
+
+	// Then 64,000 seconds (18 hours) with zero errors...
+	et:64707  Good:298277629  4609/sec  bad:2  resetBus: 0
+	et:64708  Good:298282237  4609/sec  bad:2  resetBus: 0	
+```
 ### 2017  Mar 18 day
 ```
 	PCA9548A Library Test Code at 0x70
@@ -174,6 +189,12 @@ With 0xA5, that means 4 total outputs are enabled, so the total pullup value is 
 too strong.
 
 ## Systronix MUX board
+### 2017 Mar 18 night, same time as Adafruit breakout, same code
+```
+	et:64761  Good:298543985  4610/sec
+	et:64762  Good:298548593  4610/sec
+	et:64763  Good:298553201  4610/sec
+```
 ### 2017 Mar 15 overnight
 ```
 	et:60275  Good:277361057  4601/sec
