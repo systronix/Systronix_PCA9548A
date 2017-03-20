@@ -49,6 +49,7 @@ Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);
 TMP102 on board SALT has same address as TMP275 0 so don't use that
 */
 
+Systronix_TMP275 Mux0Temp1(TMP275_SLAVE_ADDR_1);  // D1 ambient temp
 Systronix_TMP275 Mux0Temp2(TMP275_SLAVE_ADDR_2);  // D1 C1 outside
 Systronix_TMP275 Mux0Temp3(TMP275_SLAVE_ADDR_3);  // D1 C1 inside
 Systronix_TMP275 Mux0Temp4(TMP275_SLAVE_ADDR_4);
@@ -327,6 +328,23 @@ void loop(void)
   if (stat != SUCCESS) Serial.printf("Mux0Temp2 error, stat=%u\r\n", stat);
   temp = Mux0Temp2.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp2 %6.4f F\r\n", temp);
+
+  // ------------------------------
+  // Init Mux0Temp1 Sensors
+  stat = Mux0Temp1.init(TMP275_CFG_RES12);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp1 init failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.ret_val);
+
+  // leave the pointer set to read temperature
+  stat = Mux0Temp1.pointerWrite(TMP275_TEMP_REG_PTR);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp1 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.ret_val);
+
+  // Read Temp on Mux0Temp1
+  rawtemp=0;
+  temp=0.0;
+  stat = Mux0Temp1.register16Read (&rawtemp);
+  if (stat != SUCCESS) Serial.printf("Mux0Temp1 error, stat=%u\r\n", stat);
+  temp = Mux0Temp1.raw12_to_f(rawtemp);
+  Serial.printf ("Mux0Temp1 %6.4f F\r\n", temp);  
 
 
 
