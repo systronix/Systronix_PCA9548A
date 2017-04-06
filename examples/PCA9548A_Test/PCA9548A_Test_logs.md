@@ -3,6 +3,19 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
+### 2014 Apr 04 after running over 2 weeks
+```
+	et:1169822  Good:1096874442  937/sec  bad:28  resetBus: 0
+	...
+
+	et:1363479  Good:1989449786  1459/sec  bad:28  resetBus: 0
+	et:1363480  Good:1989454394  1459/sec  bad:28  resetBus: 0
+	control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:1363481  Good:1989457311  1459/sec  bad:29  resetBus: 0
+	et:1363482  Good:1989461263  1459/sec  bad:29  resetBus: 0
+
+```
 ### 2017 Mar 18 night
 ```
 	// 2 errors in the first 16 minutes...
