@@ -3,13 +3,20 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
-### 2014 Apr 12 
+### 2017 Apr 23
+311 hours, 881x10e6 good cycles
+```
+	et:1122780  Good:881685613  785/sec  bad:85  resetBus: 1
+	et:1122781  Good:881690221  785/sec  bad:85  resetBus: 1
+```	
+### 2017 Apr 12 
 This is 43 hours after a reset.
 ```
 	et:156747  Good:722689166  4610/sec  bad:19  resetBus: 1
 	et:156748  Good:722693774  4610/sec  bad:19  resetBus: 1
 ```
-### 2014 Apr 04 after running over 2 weeks
+### 2017 Apr 04 
+after running over 2 weeks, almost 1.1 billion good cycles
 ```
 	et:1169822  Good:1096874442  937/sec  bad:28  resetBus: 0
 	...
