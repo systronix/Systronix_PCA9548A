@@ -217,10 +217,11 @@
 			}
 		},
 		{
-			"file": "/C/Users/BAB/Documents/code/Arduino/libraries/i2c_t3/README.md",
+			"file": "examples/PCA9548A_Test/PCA9548A_Test_logs.md",
 			"settings":
 			{
-				"buffer_size": 26856,
+				"buffer_size": 9639,
+				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
 		},
@@ -335,6 +336,9 @@
 	},
 	"expanded_folders":
 	[
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_PCA9548A",
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_PCA9548A/examples",
+		"/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_PCA9548A/examples/PCA9548A_Test",
 		"/C/Users/BAB/Documents/code/Arduino/libraries/i2c_t3"
 	],
 	"file_history":
@@ -823,27 +827,26 @@
 				},
 				{
 					"buffer": 2,
-					"file": "/C/Users/BAB/Documents/code/Arduino/libraries/i2c_t3/README.md",
-					"semi_transient": true,
+					"file": "examples/PCA9548A_Test/PCA9548A_Test_logs.md",
+					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 26856,
+						"buffer_size": 9639,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2117,
-								2117
+								21,
+								21
 							]
 						],
 						"settings":
 						{
-							"function_name_status_row": 37,
+							"function_name_status_row": 1,
 							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
-							"tab_size": 2,
-							"translate_tabs_to_spaces": true
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,

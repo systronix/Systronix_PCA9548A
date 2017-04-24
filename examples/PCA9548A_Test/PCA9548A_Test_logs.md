@@ -4,6 +4,22 @@
 
 ## Adafruit breakout
 ### 2017 Apr 23
+
+While working today, noticed new errors.
+
+```
+et:1128379  Good:907493435  804/sec  bad:86  resetBus: 1
+control read got 0 bytes, not 1
+control read failed with return of 0x05: I2C_ADDR_NAK
+et:1128380  Good:907495742  804/sec  bad:87  resetBus: 1
+```
+
+```
+et:1124654  Good:890324349  791/sec  bad:85  resetBus: 1
+control write to ch 7 of 0x80 failed with return of 0x06: I2C_DATA_NAK
+et:1124655  Good:890327355  791/sec  bad:86  resetBus: 1
+```
+
 311 hours, 881x10e6 good cycles
 ```
 	et:1122780  Good:881685613  785/sec  bad:85  resetBus: 1
