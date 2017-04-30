@@ -220,7 +220,7 @@
 			"file": "examples/PCA9548A_Test/PCA9548A_Test_logs.md",
 			"settings":
 			{
-				"buffer_size": 9639,
+				"buffer_size": 10365,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -831,20 +831,20 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 9639,
+						"buffer_size": 10365,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								21,
-								21
+								141,
+								141
 							]
 						],
 						"settings":
 						{
-							"function_name_status_row": 1,
+							"function_name_status_row": -1,
 							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},

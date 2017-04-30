@@ -3,6 +3,14 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
+
+### 2017 Apr 29
+Six days since the last bad message. Now 2.8 billion I2C cycles
+```
+	et:1539952  Good:2804738254  1821/sec  bad:87  resetBus: 1
+	control write to ch 1 of 0x02 failed with return of 0x04: I2C_TIMEOUT
+	et:1539953  Good:2804740512  1821/sec  bad:88  resetBus: 1
+```
 ### 2017 Apr 23
 
 While working today, noticed new errors.
