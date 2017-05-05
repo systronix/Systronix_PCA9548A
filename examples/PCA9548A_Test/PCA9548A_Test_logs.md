@@ -3,6 +3,16 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
+2017 May 05
+Different message output to reduce log file size.
+No changes to text procedure. 
+Build with Arduino 1.8.2, TD 1.36
+
+```
+	..........'control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:17050  Good:78646086  4613/sec  bad:1  resetBus: 0
+```
 
 ### 2017 May 05
 594 hours (24.8 days). 486 million good. Why is messages per second so slow?
