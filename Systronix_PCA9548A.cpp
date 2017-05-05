@@ -7,6 +7,9 @@
 
 /**---------------------------< REVISIONS >----------------------------------
 
+2017 May 05 bboyes	Changed default i2c_t3 timeout to 5000 usec, which is still
+likely way too much. There's nothing that slow in the 9557 access.
+
 2017 Mar 15	bboyes	Changed tally_errors to properly record current Wire.status()
 return values. Disabled simpleTest because it is not so simple and could return
 with the config register changed in the middle of another loop which requires it
@@ -87,7 +90,7 @@ void Systronix_PCA9548A::begin(void)
 	{
 	Wire.begin();			// join I2C as master
 #if defined I2C_T3_H	
-	Wire.setDefaultTimeout(10000);	// 1000 usec = 1 msec; 10,000 = 10 msec seems too long.
+	Wire.setDefaultTimeout(5000);	// 1000 usec = 1 msec; 10,000 = 10 msec seems too long.
 #endif
 
 	}

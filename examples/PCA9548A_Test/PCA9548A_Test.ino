@@ -38,6 +38,24 @@ Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);
 const char * text_ptr;
 
 uint32_t startuptime = 0;
+uint32_t new_millis = 0;
+uint32_t old_millis = 0;
+uint32_t old_sec_millis = 0;
+
+uint32_t new_elapsed_seconds = 0;
+uint32_t total_elapsed_seconds = 0;
+boolean seconds_tick = false;
+
+boolean seconds_ten_tick = false;
+boolean minute_tick = false;
+boolean minute_ten_tick = false;
+
+boolean verbose = false;
+boolean new_errors = false;
+
+uint8_t inbyte = 0;
+
+uint32_t old_total_error_count = 0;
 
 /* ========== SETUP ========== */
 void setup(void) 
@@ -118,11 +136,13 @@ void setup(void)
   Serial.print(dtime/1000);
   Serial.print(" sec, ");
  
-  Serial.printf("Setup Complete!\r\nSend Q/q for quiet, V/v for verbose");
+  Serial.printf("Setup Complete!\r\nSend V/v to toggle verbose");
 #if defined I2C_T3_H 
   Serial.printf(", r/R for Wire.resetBus()");
 #endif
-  Serial.printf("\r\n\n");
+  Serial.printf("\r\n");
+  Serial.printf("In quiet mode, detailed output every 10 minutes\r\n");
+  Serial.printf("\n");
 
   delay(2000);
 
@@ -130,10 +150,7 @@ void setup(void)
 
 }
 
-boolean verbose = false;
 
-uint32_t oldtime, newtime;
-uint8_t inbyte = 0;
 
 /* ========== LOOP ========== */
 void loop(void) 
@@ -143,22 +160,52 @@ void loop(void)
   uint8_t control_read_val = 0;
 
 
+  new_millis = millis();
+  if (new_millis > (old_millis + 100UL))  // 100 msec or more has passed, so check for seconds tick
+  {
+    old_millis = new_millis;
 
-  oldtime = millis()/1000;
+    new_elapsed_seconds = new_millis/1000UL;
+    if (new_elapsed_seconds > total_elapsed_seconds)
+    {
+      // seconds tick
+      total_elapsed_seconds = new_elapsed_seconds;
+      old_sec_millis = new_millis;
+      seconds_tick = true;
+    }
+  }
+
+  /**
+   * update seconds, 10 seconds, minute ticks
+   */
+  if (seconds_tick)
+  {
+      Serial.print(".");
+
+      if (0 == (total_elapsed_seconds % 10))
+      {
+          seconds_ten_tick = true;
+      }
+
+      if (0 == (total_elapsed_seconds % 60))
+      {
+          minute_tick = true;
+
+          if (0 == (total_elapsed_seconds % 600))
+            minute_ten_tick = true;
+      }
+  }
+
+
 
   if (Serial.available()>0)
   {
     inbyte = Serial.read();
     switch (inbyte)
     {
-      case 'q':
-      case 'Q':
-        verbose = false;
-        break;
-
       case 'v':
       case 'V':
-        verbose = true;
+        verbose = !verbose;
         break;
 
 #if defined I2C_T3_H 
@@ -227,20 +274,45 @@ void loop(void)
 
   digitalWrite(LED_BUILTIN,LOW); // LED off+
 
-  newtime = millis()/1000;
-
-  if ( (verbose) || (newtime > oldtime) )
+  if (PCA9548A_70.error.total_error_count > old_total_error_count)
   {
-    Serial.printf("et:%u  Good:%u  %u/sec", millis()/1000, PCA9548A_70.error.successful_count, PCA9548A_70.error.successful_count/(newtime-startuptime));
-    if (PCA9548A_70.error.total_error_count) 
-      {
-        Serial.printf("  bad:%u", PCA9548A_70.error.total_error_count);
+    old_total_error_count = PCA9548A_70.error.total_error_count;   // update our threshold
+    new_errors = true;
+  }
+
+  if (seconds_tick || verbose || minute_ten_tick || new_errors)
+  {
+    seconds_tick = false; // we've used it up
+
+    if (verbose || minute_ten_tick || new_errors)
+    {
+      minute_ten_tick = false;
+      new_errors = false;
+      Serial.printf("\r\net:%u  Good:%u  %u/sec", total_elapsed_seconds, PCA9548A_70.error.successful_count, PCA9548A_70.error.successful_count/(total_elapsed_seconds-startuptime));
+      if (PCA9548A_70.error.total_error_count) 
+        {
+          Serial.printf("  bad:%u", PCA9548A_70.error.total_error_count);
 #if defined I2C_AUTO_RETRY
-        Serial.printf("  resetBus: %u", Wire.resetBusCountRead());
+    Serial.printf("  resetBus: %u", Wire.resetBusCountRead());
 #endif
-      }
-    Serial.println(); 
+        }
+      Serial.println(); 
     if (verbose) Serial.println();
+    }
+    else
+    {
+      // seconds tick but not verbose or no errors, so minimal output
+      if (seconds_ten_tick)
+      {
+        seconds_ten_tick = false; // we've used it up
+        Serial.print("'");
+      } 
+      if (minute_tick)
+      {
+        minute_tick = false;  // we've used it up
+        Serial.println();     // keep periods from piling up on one line
+      }
+    }  
   }
 
   // delay(dtime);

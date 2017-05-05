@@ -4,6 +4,28 @@
 
 ## Adafruit breakout
 
+### 2017 May 05
+594 hours (24.8 days). 486 million good. Why is messages per second so slow?
+Stopping to load some revised version.
+```
+	et:1968739  Good:486398717  247/sec  bad:91  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:1968740  Good:486400970  247/sec  bad:92  resetBus: 1
+	...
+	et:1973468  Good:508196138  257/sec  bad:92  resetBus: 1
+	control write to ch 3 of 0x08 failed with return of 0x06: I2C_DATA_NAK
+	et:1973469  Good:508198480  257/sec  bad:93  resetBus: 1
+	...
+	et:2079859  Good:998636304  480/sec  bad:93  resetBus: 1
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:2079860  Good:998640301  480/sec  bad:94  resetBus: 1
+	...
+	
+	et:2139892  Good:1275382429  596/sec  bad:94  resetBus: 1
+```
+
 ### 2017 Apr 29
 Six days since the last bad message. Now 2.8 billion I2C cycles
 ```
@@ -12,9 +34,7 @@ Six days since the last bad message. Now 2.8 billion I2C cycles
 	et:1539953  Good:2804740512  1821/sec  bad:88  resetBus: 1
 ```
 ### 2017 Apr 23
-
 While working today, noticed new errors.
-
 ```
 et:1128379  Good:907493435  804/sec  bad:86  resetBus: 1
 control read got 0 bytes, not 1
