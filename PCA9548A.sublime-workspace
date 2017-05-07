@@ -236,7 +236,7 @@
 			"file": "examples/PCA9548A_Test/PCA9548A_Test_logs.md",
 			"settings":
 			{
-				"buffer_size": 11464,
+				"buffer_size": 11738,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -848,21 +848,21 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11464,
+						"buffer_size": 11738,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								152,
-								152
+								158,
+								158
 							]
 						],
 						"settings":
 						{
 							"color_scheme": "Packages/User/Color Highlighter/themes/Cobalt.tmTheme",
-							"function_name_status_row": 7,
+							"function_name_status_row": -1,
 							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},

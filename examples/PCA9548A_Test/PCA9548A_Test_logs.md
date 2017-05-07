@@ -3,6 +3,16 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
+2017 May 07
+869 million good in 52 hrs. Why is this rate so much higher
+than the previous test: 247/sec?
+```
+	..........'control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	...
+	et:188400  Good:869101526  4613/sec  bad:1  resetBus: 0
+```
+
 2017 May 05
 Different message output to reduce log file size.
 No changes to text procedure. 
