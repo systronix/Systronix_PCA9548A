@@ -3,7 +3,37 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
-2017 May 07
+### 2017 May 09
+1.5 billion good
+```
+	..........'control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:17050  Good:78646086  4613/sec  bad:1  resetBus: 0
+
+	..........'..........'..........'........control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:260138  Good:1200041699  4613/sec  bad:2  resetBus: 0
+	..'....control write to ch 0 of 0x01 failed with return of 0x04: I2C_TIMEOUT
+	et:260144  Good:1200068099  4613/sec  bad:3  resetBus: 0
+
+
+	..........'..........'..........'...control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:277773  Good:1281388948  4613/sec  bad:4  resetBus: 0
+
+
+	....control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:279005  Good:1287068467  4613/sec  bad:5  resetBus: 0
+
+	et:291600  Good:1345165267  4613/sec  bad:5  resetBus: 0
+	.........'.....control write to ch 2 of 0x04 failed with return of 0x06: I2C_DATA_NAK
+	et:291615  Good:1345236919  4613/sec  bad:6  resetBus: 0
+
+	et:338400  Good:1561063367  4613/sec  bad:6  resetBus: 0
+```
+
+### 2017 May 07
 869 million good in 52 hrs. Why is this rate so much higher
 than the previous test: 247/sec?
 ```
