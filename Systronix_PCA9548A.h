@@ -49,8 +49,11 @@ This library was developed and tested on Teensy3 (ARM CortexM4) with I2C_T3 libr
 
 #include <Arduino.h>
 
-// no stdint.h ??? so:
-#define LLONG_MAX 0xFFFFFFFFFFFFFFFF
+// #define ULLONG_MAX 0xFFFFFFFFFFFFFFFF
+// UINT64_MAX is in hardware\tools\arm\lib\gcc\arm-none-eabi\5.4.1\include\stdint-gcc.h 
+#if not defined ULLONG_MAX			// C++ 11
+#define ULLONG_MAX UINT64_MAX		// GCC-ARM
+#endif
 
 //#include <Wire.h>	// try Paul's new Wire lib
 

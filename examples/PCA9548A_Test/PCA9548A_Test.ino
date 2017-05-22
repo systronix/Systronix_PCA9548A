@@ -93,6 +93,8 @@ void setup(void)
 #if defined I2C_T3_H 
   Serial.printf("Using i2c_t3 I2C library for Teensy\r\n");
 #endif
+
+  if (0xFFFFFFFFFFFFFFFE < UINT64_MAX) Serial.println ("Test of UINT64_MAX seems to pass");
   
   // start PCA9548A library
   PCA9548A_70.begin();
