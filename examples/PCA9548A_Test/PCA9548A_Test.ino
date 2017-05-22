@@ -57,6 +57,8 @@ uint8_t inbyte = 0;
 
 uint32_t old_total_error_count = 0;
 
+
+
 /* ========== SETUP ========== */
 void setup(void) 
 {
@@ -94,6 +96,16 @@ void setup(void)
   Serial.printf("Using i2c_t3 I2C library for Teensy\r\n");
 #endif
 
+  uint64_t uint64_test = 0;
+  uint64_test = UINT64_MAX;
+  // Serial.println(uint64_test);
+  uint64_test++;
+  // Serial.println(uint64_test);
+  Serial.printf("More than 32 bits? %llu, 0x%llX\r\n", uint64_test, uint64_test);
+  Serial.printf ("UINT32_MAX=0x%X, UINT64_MAX=0x%llX\r\n", UINT32_MAX, UINT64_MAX);
+  Serial.printf ("UINT64_MAX=0x%llX, UINT32_MAX=0x%X\r\n", UINT64_MAX, UINT32_MAX);
+  Serial.printf ("UINT32_MAX=%u, UINT64_MAX=%llu\r\n", UINT32_MAX, UINT64_MAX);
+  if (0xFFFFFFFFFFFFFFFE < ULLONG_MAX) Serial.println ("Test of ULLONG_MAX seems to pass");
   if (0xFFFFFFFFFFFFFFFE < UINT64_MAX) Serial.println ("Test of UINT64_MAX seems to pass");
   
   // start PCA9548A library
@@ -290,10 +302,10 @@ void loop(void)
     {
       minute_ten_tick = false;
       new_errors = false;
-      Serial.printf("\r\net:%u  Good:%u  %u/sec", total_elapsed_seconds, PCA9548A_70.error.successful_count, PCA9548A_70.error.successful_count/(total_elapsed_seconds-startuptime));
+      Serial.printf("\r\net:%u  Good:%llu  %llu/sec", total_elapsed_seconds, PCA9548A_70.error.successful_count, PCA9548A_70.error.successful_count/(uint64_t)(total_elapsed_seconds-startuptime));
       if (PCA9548A_70.error.total_error_count) 
         {
-          Serial.printf("  bad:%u", PCA9548A_70.error.total_error_count);
+          Serial.printf("  bad:%llu", PCA9548A_70.error.total_error_count);
 #if defined I2C_AUTO_RETRY
     Serial.printf("  resetBus: %u", Wire.resetBusCountRead());
 #endif
