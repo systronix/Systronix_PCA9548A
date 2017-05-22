@@ -236,7 +236,7 @@
 			"file": "examples/PCA9548A_Test/PCA9548A_Test_logs.md",
 			"settings":
 			{
-				"buffer_size": 11738,
+				"buffer_size": 12858,
 				"encoding": "UTF-8",
 				"line_ending": "Windows"
 			}
@@ -298,7 +298,7 @@
 			"file": "/C/Users/BAB/Documents/code/Arduino/libraries/Systronix_MB85RC256V/Systronix_MB85RC256V.cpp",
 			"settings":
 			{
-				"buffer_size": 13947,
+				"buffer_size": 13962,
 				"line_ending": "Windows"
 			}
 		}
@@ -848,21 +848,21 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11738,
+						"buffer_size": 12858,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								158,
-								158
+								1449,
+								1449
 							]
 						],
 						"settings":
 						{
 							"color_scheme": "Packages/User/Color Highlighter/themes/Cobalt.tmTheme",
-							"function_name_status_row": -1,
+							"function_name_status_row": 42,
 							"syntax": "Packages/Markdown/Markdown.sublime-syntax",
 							"translate_tabs_to_spaces": false
 						},
@@ -1067,7 +1067,7 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 13947,
+						"buffer_size": 13962,
 						"regions":
 						{
 						},

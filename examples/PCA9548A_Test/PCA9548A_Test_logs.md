@@ -3,6 +3,87 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
+
+### 2017 May 21
+good is a long... so 2**32 = 4,294,967,296 max
+So good overflowed but et did not so suddenly the quotient good/time is really low!
+```
+	et:930600  Good:4292831601  4612/sec  bad:29  resetBus: 0
+	...
+	et:931200  Good:632033  0/sec  bad:29  resetBus: 0
+```
+### 2017 May 20
+2.4 billion good
+```
+	et:1313400  Good:1763673743  1342/sec  bad:46  resetBus: 0
+	...
+	control write to ch 5 of 0x20 failed with return of 0x05: I2C_ADDR_NAK
+	...
+	.....control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+
+	et:461945  Good:2130955408  4613/sec  bad:14  resetBus: 0
+
+	..........'..........'.........control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+
+	et:520409  Good:2400656279  4613/sec  bad:15  resetBus: 0
+	.'.....control write to ch 0 of 0x01 failed with return of 0x06: I2C_DATA_NAK
+
+	et:520415  Good:2400683607  4613/sec  bad:16  resetBus: 0
+
+	.......control write to ch 5 of 0x20 failed with return of 0x05: I2C_ADDR_NAK
+
+	et:529687  Good:2443454257  4613/sec  bad:17  resetBus: 0
+
+	Error: control read value=0x1F
+
+	et:534530  Good:2465792519  4613/sec  bad:18  resetBus: 0
+	..........'
+	..........'..........'..........'..........'..........'..........
+	et:534600  Good:2466110567  4613/sec  bad:18  resetBus: 0
+
+	control write to ch 3 of 0x08 failed with return of 0x06: I2C_DATA_NAK
+
+	et:535800  Good:2471646359  4613/sec  bad:18  resetBus: 0
+	.'
+	.........'..........'..........'..........'..........'..........'
+	.........control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+
+	et:535869  Good:2471966240  4613/sec  bad:19  resetBus: 0
+
+	et:537348  Good:2478787750  4613/sec  bad:20  resetBus: 0
+	..'control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+
+	et:537350  Good:2478794095  4613/sec  bad:21  resetBus: 0
+	..........'
+	..........'..........'..........'...control write to ch 1 of 0x02 failed with return of 0x05: I2C_ADDR_NAK
+
+	et:537393  Good:2478987985  4613/sec  bad:22  resetBus: 0
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+
+	et:537393  Good:2478988322  4613/sec  bad:23  resetBus: 0
+
+	..........'.........control write to ch 7 of 0x80 failed with return of 0x06: I2C_DATA_NAK
+
+	et:545959  Good:2518500960  4613/sec  bad:24  resetBus: 0
+	.'..........'..........'..........'..........
+	et:546000  Good:2518684576  4612/sec  bad:24  resetBus: 0
+
+
+	
+
+	.'
+	.........'..........'..........'..........'..........'..........'
+	.........control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+
+	et:535869  Good:2471966240  4613/sec  bad:19  resetBus: 0
+
+```
 ### 2017 May 09
 1.5 billion good
 ```

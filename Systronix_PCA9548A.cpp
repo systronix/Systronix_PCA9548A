@@ -7,6 +7,9 @@
 
 /**---------------------------< REVISIONS >----------------------------------
 
+2017 May 21 bboyes	Changed total_error_count and successful_count to 64 bit 
+long long and check against LLONG_MAX before incrementing
+
 2017 May 05 bboyes	Changed default i2c_t3 timeout to 5000 usec, which is still
 likely way too much. There's nothing that slow in the 9557 access.
 
@@ -141,7 +144,7 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 		else
 			{
 			// completely successful
-			error.successful_count++;
+			if (error.successful_count < LLONG_MAX) error.successful_count++;
 			_control_reg = control;					// shadow copy to remember this setting
 			return SUCCESS;
 			}
@@ -187,7 +190,7 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 		else
 			{
 				// completely successful
-				error.successful_count++;
+				if (error.successful_count < LLONG_MAX) error.successful_count++;
 				_control_reg = control;					// shadow copy to remember this setting
 				return SUCCESS;
 			}
@@ -226,7 +229,7 @@ uint8_t Systronix_PCA9548A::controlRead (uint8_t *data)
 		return !SUCCESS;
 		}
 
-	error.successful_count++;
+	if (error.successful_count < LLONG_MAX) error.successful_count++;
 	*data = (uint8_t)Wire.read();
 	return SUCCESS;
 	}
@@ -332,7 +335,7 @@ uint8_t Systronix_PCA9548A::enableManyTest (void)
 
 void Systronix_PCA9548A::tally_errors (uint8_t err)
 	{
-	if (error.total_error_count < 0xFFFFFFFF) error.total_error_count++; 	// every time here incr total error count
+	if (error.total_error_count < LLONG_MAX) error.total_error_count++; 	// every time here incr total error count
 	switch (err)
 		{
 		case 0:					// Wire.write failed to write all of the data to tx_buffer

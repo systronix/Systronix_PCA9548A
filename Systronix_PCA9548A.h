@@ -18,6 +18,8 @@
 
 /**---------------------------< REVISIONS >----------------------------------
 
+2017 May 21 bboyes	Changed total_error_count and successful_count to 64 bit 
+
 2017 Mar 15	bboyes	error struct names and variables to properly match current 
 Wire.status() return values. 
 
@@ -46,6 +48,9 @@ This library was developed and tested on Teensy3 (ARM CortexM4) with I2C_T3 libr
 ------------------------------------------------------------------------------*/
 
 #include <Arduino.h>
+
+// no stdint.h ??? so:
+#define LLONG_MAX 0xFFFFFFFFFFFFFFFF
 
 //#include <Wire.h>	// try Paul's new Wire lib
 
@@ -171,6 +176,9 @@ class Systronix_PCA9548A
 		/** error stucture
 		Note that this can be written by a library user, so it could be cleared if desired as part of 
 		some error recovery or logging operation. It could also be inadvertenly erased...
+
+		Note that in a really long test, some of these values could overflow and wrap around to 0.
+		We don't test for that in the library.
 		*/
 		struct
 			{
@@ -185,8 +193,8 @@ class Systronix_PCA9548A
 			uint32_t	other_error_count;				// arbitration lost or timeout
 			uint32_t	unknown_error_count;
 			uint32_t	data_value_error_count;			// I2C message OK but value read was wrong; how can this be?
-			uint32_t	total_error_count;				// quick check to see if any have happened
-			uint32_t	successful_count;				// successful access cycle
+			uint64_t	total_error_count;				// quick check to see if any have happened
+			uint64_t	successful_count;				// successful access cycle
 			} error;
 
 		boolean base_clipped();
