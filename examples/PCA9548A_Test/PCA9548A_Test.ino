@@ -105,7 +105,6 @@ void setup(void)
   Serial.printf ("UINT32_MAX=0x%X, UINT64_MAX=0x%llX\r\n", UINT32_MAX, UINT64_MAX);
   Serial.printf ("UINT64_MAX=0x%llX, UINT32_MAX=0x%X\r\n", UINT64_MAX, UINT32_MAX);
   Serial.printf ("UINT32_MAX=%u, UINT64_MAX=%llu\r\n", UINT32_MAX, UINT64_MAX);
-  if (0xFFFFFFFFFFFFFFFE < ULLONG_MAX) Serial.println ("Test of ULLONG_MAX seems to pass");
   if (0xFFFFFFFFFFFFFFFE < UINT64_MAX) Serial.println ("Test of UINT64_MAX seems to pass");
   
   // start PCA9548A library
@@ -155,7 +154,7 @@ void setup(void)
   Serial.printf(", r/R for Wire.resetBus()");
 #endif
   Serial.printf("\r\n");
-  Serial.printf("In quiet mode, detailed output every 10 minutes\r\n");
+  Serial.printf("In quiet mode: detailed output every 10 minutes\r\n");
   Serial.printf("\n");
 
   delay(2000);

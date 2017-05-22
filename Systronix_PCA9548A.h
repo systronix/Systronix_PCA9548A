@@ -49,14 +49,6 @@ This library was developed and tested on Teensy3 (ARM CortexM4) with I2C_T3 libr
 
 #include <Arduino.h>
 
-// #define ULLONG_MAX 0xFFFFFFFFFFFFFFFF
-// UINT64_MAX is in hardware\tools\arm\lib\gcc\arm-none-eabi\5.4.1\include\stdint-gcc.h 
-#if not defined ULLONG_MAX			// C++ 11
-#define ULLONG_MAX UINT64_MAX		// GCC-ARM
-#endif
-
-//#include <Wire.h>	// try Paul's new Wire lib
-
 // Use Teensy improved I2C library
 // #if defined (__MK20DX256__) || defined (__MK20DX128__) 	// Teensy 3.1 or 3.2 || Teensy 3.0
 // from https://forum.pjrc.com/threads/42411-Communication-impossible-in-I2C-tennsy3-6?p=135630&viewfull=1#post135630
@@ -180,8 +172,8 @@ class Systronix_PCA9548A
 		Note that this can be written by a library user, so it could be cleared if desired as part of 
 		some error recovery or logging operation. It could also be inadvertenly erased...
 
-		Note that in a really long test, some of these values could overflow and wrap around to 0.
-		We don't test for that in the library.
+		successful_count overflowed at 258.5 hours. Making this a 64-bit unsigned (long long) allows
+		for 2**32 times as many hours. So not likely to ever wrap wrap.
 		*/
 		struct
 			{

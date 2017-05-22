@@ -6,7 +6,8 @@
 
 ### 2017 May 21
 good is a long... so 2**32 = 4,294,967,296 max
-So good overflowed but et did not so suddenly the quotient good/time is really low!
+So good overflowed at 258.5 hours, but et did not so suddenly the quotient good/time is really low!
+Making this a 64-bit unsigned (long long) would allow for 2**32 times as many hours. So not likely to wrap.
 ```
 	et:930600  Good:4292831601  4612/sec  bad:29  resetBus: 0
 	...
