@@ -79,7 +79,7 @@ boolean Systronix_PCA9548A::base_clipped()
 	return _base_clipped;
 }
 
-uint8_t Systronix_PCA9548A::base_address()
+uint8_t Systronix_PCA9548A::base_get()
 {
 	return _base;
 }
@@ -123,7 +123,8 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 	// return: #bytes written = success, 0=fail
 	if (1 != error.ret_val)
 		{
-		tally_errors (0);		// data length error
+		error.ret_val = 0;
+		tally_errors (error.ret_val);			// buffer write length error
 		// now if error, error.ret_val is 0
 		// and no point in continuing
 		}
@@ -175,7 +176,8 @@ uint8_t Systronix_PCA9548A::controlWrite (uint8_t control)
 
 	if (1 != error.ret_val)
 		{
-		tally_errors (0);			// buffer write length error
+		error.ret_val = 0;
+		tally_errors (error.ret_val);			// buffer write length error
 		}
 	else
 		{

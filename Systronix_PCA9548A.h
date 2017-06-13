@@ -193,7 +193,7 @@ class Systronix_PCA9548A
 			} error;
 
 		boolean base_clipped();
-		uint8_t base_address();
+		uint8_t base_get();
 
 		Systronix_PCA9548A (uint8_t base);				// constructor w/base passed in
 		Systronix_PCA9548A ();							// default constructor

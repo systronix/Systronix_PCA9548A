@@ -85,7 +85,7 @@ void setup(void)
   // Wait here for 10 seconds to see if we will use Serial Monitor, so output is not lost
   while((!Serial) && (millis()<10000));    // wait until serial monitor is open or timeout, which seems to fall through
  
-  Serial.printf("\r\nPCA9548A and TMP275 Test Code at 0x%.2X\r\n", PCA9548A_70.base_address());
+  Serial.printf("\r\nPCA9548A and TMP275 Test Code at 0x%.2X\r\n", PCA9548A_70.base_get());
 
     Serial.printf("Build %s - %s\r\n%s\r\n", __DATE__, __TIME__, __FILE__);
 
@@ -142,7 +142,7 @@ void setup(void)
 
 
   if ( PCA9548A_70.base_clipped() )
-    Serial.printf(" base address out of range, clipped to 0x%u", PCA9548A_70.base_address());
+    Serial.printf(" base address out of range, clipped to 0x%u", PCA9548A_70.base_get());
 
   Serial.print(" Interval is ");
   Serial.print(dtime/1000);

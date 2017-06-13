@@ -18,6 +18,12 @@
 		},
 		{
 			"path": "C:\\Users\\BAB\\Documents\\code\\Arduino\\libraries\\Wire"
+		},
+		{
+			"path": "C:\\Users\\BAB\\Documents\\code\\Arduino\\libraries\\Systronix_PCA9557"
+		},
+		{
+			"path": "C:\\Users\\BAB\\Documents\\code\\Arduino\\libraries\\SALT_power_FRU"
 		}
 	]
 }
