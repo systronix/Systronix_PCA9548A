@@ -64,7 +64,7 @@ Systronix_PCA9548A::Systronix_PCA9548A(uint8_t base)
 Systronix_PCA9548A::Systronix_PCA9548A()
 	{
 	_base = PCA9548A_SLAVE_ADDR_0;
-	_base_clipped = false;	// since it's constant it must be OK
+	_base_clipped = false;						// since it's constant it must be OK
 	error.total_error_count = 0;				// clear the error counter
 	}
 
@@ -177,7 +177,6 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 		return ABSENT;
 		}
 
-	tally_transaction (SUCCESS);
 	return SUCCESS;
 	}
 
@@ -313,6 +312,7 @@ uint8_t Systronix_PCA9548A::control_write (uint8_t control)
 		}
 
 	_control_reg = control;						// shadow copy to remember this setting
+	tally_transaction (SUCCESS);
 	return SUCCESS;
 	}
 
