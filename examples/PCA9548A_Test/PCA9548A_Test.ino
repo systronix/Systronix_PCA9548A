@@ -112,7 +112,7 @@ void setup(void)
   PCA9548A_70.setup( PCA9548A_SLAVE_ADDR_0, Wire1, (char*)"Wire");
   PCA9548A_70.begin();
 
-  config_value = PCA9548A_CHAN_0_ENABLE;  // 
+  config_value = PCA9548A_PORT_0_ENABLE;  // 
 
   // initialize MUX, don't proceed unless succeeds
   do

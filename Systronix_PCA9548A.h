@@ -91,20 +91,21 @@ The lsb of the address byte is the R/W bit which is not an address bit.
 
 /** --------  Control Register --------
 After the slave address, the master sends the control register value
-which has bit 7..0, which if 1 enable channel [7..0]
+which has bit 7..0, which if 1 enable port [7..0]
 
-More than one channel can be enabled at a time!
+More than one port can be enabled at a time!
 OR these bits to enable more than one.
 */
 
-#define		PCA9548A_CHAN_0_ENABLE		1
-#define		PCA9548A_CHAN_1_ENABLE		(1<<1)
-#define		PCA9548A_CHAN_2_ENABLE		(1<<2)
-#define		PCA9548A_CHAN_3_ENABLE		(1<<3)
-#define		PCA9548A_CHAN_4_ENABLE		(1<<4)
-#define		PCA9548A_CHAN_5_ENABLE		(1<<5)
-#define		PCA9548A_CHAN_6_ENABLE		(1<<6)
-#define		PCA9548A_CHAN_7_ENABLE		(1<<7)
+#define		PCA9548A_PORTS_DISABLE		0
+#define		PCA9548A_PORT_0_ENABLE		1
+#define		PCA9548A_PORT_1_ENABLE		(1<<1)
+#define		PCA9548A_PORT_2_ENABLE		(1<<2)
+#define		PCA9548A_PORT_3_ENABLE		(1<<3)
+#define		PCA9548A_PORT_4_ENABLE		(1<<4)
+#define		PCA9548A_PORT_5_ENABLE		(1<<5)
+#define		PCA9548A_PORT_6_ENABLE		(1<<6)
+#define		PCA9548A_PORT_7_ENABLE		(1<<7)
 
 
 
@@ -112,7 +113,7 @@ class Systronix_PCA9548A
 {
 	protected:
 		uint8_t		_base;								// base address for this instance; four possible values
-		uint8_t		_control_reg;						// copy of the control register value so we know which channels enabled
+		uint8_t		_control_reg;						// copy of the control register value so we know which ports enabled
 		void		tally_transaction (uint8_t);		// maintains the i2c_t3 error counters
 		boolean		_base_clipped;
 
@@ -128,18 +129,18 @@ class Systronix_PCA9548A
 
 		**/
 		/**
-		Array of the mux channels so we can easily index into the desired channel X with uint8_t of value X
+		Array of the mux ports so we can easily index into the desired port X with uint8_t of value X
 		*/
-		const uint8_t channel[8] =
+		const uint8_t port[8] =
 		{
-			PCA9548A_CHAN_0_ENABLE,
-			PCA9548A_CHAN_1_ENABLE,
-			PCA9548A_CHAN_2_ENABLE,
-			PCA9548A_CHAN_3_ENABLE,
-			PCA9548A_CHAN_4_ENABLE,
-			PCA9548A_CHAN_5_ENABLE,
-			PCA9548A_CHAN_6_ENABLE,
-			PCA9548A_CHAN_7_ENABLE
+			PCA9548A_PORT_0_ENABLE,
+			PCA9548A_PORT_1_ENABLE,
+			PCA9548A_PORT_2_ENABLE,
+			PCA9548A_PORT_3_ENABLE,
+			PCA9548A_PORT_4_ENABLE,
+			PCA9548A_PORT_5_ENABLE,
+			PCA9548A_PORT_6_ENABLE,
+			PCA9548A_PORT_7_ENABLE
 		};		
 
 		/**
@@ -225,7 +226,7 @@ class Systronix_PCA9548A
 		uint8_t		setup (uint8_t base, i2c_t3 wire, char* name);
 		void 		begin (i2c_pins pins, i2c_rate rate);
 		void		begin (void);						// default begin
-		uint8_t		init (uint8_t control_value);		// set operation mode, check device present and communicating
+		uint8_t		init (uint8_t control=PCA9548A_PORTS_DISABLE);		// set operation mode, check device present and communicating
 
 		void		reset_bus (void);
 		uint32_t	reset_bus_count_read (void);

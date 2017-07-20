@@ -132,7 +132,7 @@ uint8_t Systronix_PCA9548A::setup (uint8_t base, i2c_t3 wire, char* name)
 void Systronix_PCA9548A::begin (i2c_pins pins, i2c_rate rate)
 	{
 	_wire.begin(I2C_MASTER, 0x00, pins, I2C_PULLUP_EXT, rate);	// join I2C as master
-	Serial.printf("95548A Lib begin %s\r\n", _wire_name);
+//	Serial.printf("9548A lib begin %s\r\n", _wire_name);
 	_wire.setDefaultTimeout(200000); // 200ms
 	}
 
@@ -168,11 +168,11 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 
 	error.exists = true;					// so we can use control_write(); we'll find out later if device does not exist
 
-//	Serial.printf("Lib init %s at base 0x%.2X\r\n", _wire_name, _base);
+//	Serial.printf("9548A lib init %s at base 0x%.2X\r\n", _wire_name, _base);
 	ret_val = control_write (control);		// if successful this means we got two ACKs from slave device
 	if (SUCCESS != ret_val)
 		{
-		Serial.printf("Lib init %s at base 0x%.2X failed with 0x%.2X\r\n", _wire_name, _base, error.error_val);
+		Serial.printf("9548A lib init %s at base 0x%.2X failed with %s (0x%.2X)\r\n", _wire_name, _base, status_text[error.error_val], error.error_val);
 		error.exists = false;				// only place error.exists is set false
 		return ABSENT;
 		}
@@ -387,7 +387,7 @@ uint8_t Systronix_PCA9548A::enableManyTest (void)
 	}
 
 	// write test pattern complement
-	// dangerous, ~0x01 is 0xFE which enables 7 channels and any pullups on them,
+	// dangerous, ~0x01 is 0xFE which enables 7 ports and any pullups on them,
 	// could prevent slave driving low against such a large pullup load
 	test_write = ~test_write;
 	stat = control_write(test_write);

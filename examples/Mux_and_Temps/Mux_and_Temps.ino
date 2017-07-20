@@ -93,7 +93,7 @@ void setup(void)
   // start PCA9548A library
   PCA9548A_70.begin();
 
-  config_value = PCA9548A_CHAN_0_ENABLE;  // 
+  config_value = PCA9548A_PORT_0_ENABLE;  // 
 
   // initialize MUX
   do
@@ -180,7 +180,7 @@ void loop(void)
   if (verbose) Serial.printf("@%.4u  ", millis());
   
   // Enable Mux Channel 0
-  stat = PCA9548A_70.controlWrite(PCA9548A_CHAN_0_ENABLE);
+  stat = PCA9548A_70.controlWrite(PCA9548A_PORT_0_ENABLE);
   if (SUCCESS != stat)
   {
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
@@ -210,7 +210,7 @@ void loop(void)
   Serial.printf ("Mux0Temp1 %6.4f C\r\n", temp);
 
   // Enable Mux Channel 1
-  stat = PCA9548A_70.controlWrite(PCA9548A_CHAN_1_ENABLE);
+  stat = PCA9548A_70.controlWrite(PCA9548A_PORT_1_ENABLE);
   if (SUCCESS != stat)
   {
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
@@ -240,7 +240,7 @@ void loop(void)
   Serial.printf ("Mux1Temp1 %6.4f C\r\n", temp);
 
   // Enable Mux Channel 2
-  stat = PCA9548A_70.controlWrite(PCA9548A_CHAN_2_ENABLE);
+  stat = PCA9548A_70.controlWrite(PCA9548A_PORT_2_ENABLE);
   if (SUCCESS != stat)
   {
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
