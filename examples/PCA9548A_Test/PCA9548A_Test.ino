@@ -33,7 +33,8 @@ uint16_t dtime = 1000;  // delay in loop
 uint8_t config_value;
 
 
-Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);    
+//Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);
+Systronix_PCA9548A PCA9548A_70;
 
 const char * text_ptr;
 
@@ -108,9 +109,10 @@ void setup(void)
   if (0xFFFFFFFFFFFFFFFE < UINT64_MAX) Serial.println ("Test of UINT64_MAX seems to pass");
   
   // start PCA9548A library
+  PCA9548A_70.setup( PCA9548A_SLAVE_ADDR_0, Wire1, (char*)"Wire");
   PCA9548A_70.begin();
 
-  config_value = PCA9548A_CHAN_0_ENABLE;  // 
+  config_value = PCA9548A_PORT_0_ENABLE;  // 
 
   // initialize MUX, don't proceed unless succeeds
   do
@@ -120,8 +122,8 @@ void setup(void)
     Serial.printf(" Attempt #%u: Init control reg to 0x%.2X - ", iter, config_value); 
     if (SUCCESS != stat)
     {
-      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("failed - returned 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+      Serial.printf("failed - returned 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
 #if defined I2C_T3_H 
     // reset I2C just to be safe
     // we may have interrupted a message in process of loading new code or Teensy reset
@@ -239,21 +241,21 @@ void loop(void)
   {
     if (verbose) Serial.printf("@%.4u ch %u", millis(), tui);
 
-    stat = PCA9548A_70.controlWrite(PCA9548A_70.channel[tui]);
+    stat = PCA9548A_70.control_write(PCA9548A_70.channel[tui]);
     if (SUCCESS != stat)
     {
-      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("control write to ch %u of 0x%.2X failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.channel[tui], PCA9548A_70.error.ret_val, text_ptr);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+      Serial.printf("control write to ch %u of 0x%.2X failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.channel[tui], PCA9548A_70.error.error_val, text_ptr);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
     else if (verbose) Serial.print(".");  // period to show progress
 
-    stat = PCA9548A_70.controlRead(&control_read_val);
+    stat = PCA9548A_70.control_read(&control_read_val);
     if (SUCCESS != stat)
     {
-      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("control read failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+      Serial.printf("control read failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
@@ -262,7 +264,7 @@ void loop(void)
       // only check for correct value if I2C message was OK...
       // ... if here, message was successful but somehow value is wrong
       // since msg was OK error counters in lib didn't increment so do it here
-      Serial.printf("Error: control read value=0x%.2X\r\n", control_read_val);  
+      Serial.printf("Error: control read value=0x%.2X\r\n", control_read_val);
       PCA9548A_70.error.data_value_error_count++;
       PCA9548A_70.error.total_error_count++; 
       delay(dtime/2); // don't blast repeat failures too quickly

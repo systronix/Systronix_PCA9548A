@@ -110,7 +110,7 @@ void setup(void)
   // start PCA9548A library
   PCA9548A_70.begin();
 
-  config_value = PCA9548A_CHAN_0_ENABLE;  // 
+  config_value = PCA9548A_PORT_0_ENABLE;  // 
 
   // initialize MUX Channel 0, don't proceed unless succeeds
   do
@@ -211,7 +211,7 @@ void loop(void)
   Serial.printf("@%.4u\r\n", millis()/1000); 
   
   // Enable Mux Channel 0
-  stat = PCA9548A_70.controlWrite(PCA9548A_CHAN_0_ENABLE);
+  stat = PCA9548A_70.controlWrite(PCA9548A_PORT_0_ENABLE);
   if (SUCCESS != stat)
   {
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
