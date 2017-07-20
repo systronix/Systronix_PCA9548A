@@ -4,6 +4,108 @@
 
 ## Adafruit breakout
 
+### 2017 Jul 20
+This is really strange: no changes to the hardware or setup, just a restart.
+Yet somehow the same test program is working better.
+Currently over 3 x 10e9 good with two errors
+2017Jul20: et:618000 Good:2,847,141,023  4607/sec  bad:2
+That is an error rate of *702 e-12* which is just under 1 ppb.
+This is pretty good but still an error every 85.8 hours
+```
+	PCA9548A Library Test Code at 0x70
+	Build May 22 2017 - 14:27:11
+	C:\Users\BAB\Documents\code\Arduino\libraries\Systronix_PCA9548A\examples\PCA9548A_Test\PCA9548A_Test.ino
+	CPU is T_3.1/3.2
+	F_CPU =48000000
+	Using i2c_t3 I2C library for Teensy
+	More than 32 bits? 0, 0x0
+	UINT32_MAX=0xFFFFFFFF, UINT64_MAX=0xFFFFFFFFFFFFFFFF
+	UINT64_MAX=0xFFFFFFFFFFFFFFFF, UINT32_MAX=0xFFFFFFFF
+	UINT32_MAX=4294967295, UINT64_MAX=18446744073709551615
+	Test of UINT64_MAX seems to pass
+	 Attempt #1: Init control reg to 0x01 - OK!
+	 Interval is 1 sec, Setup Complete!
+	Send V/v to toggle verbose, r/R for Wire.resetBus()
+	In quiet mode: detailed output every 10 minutes
+
+	.control write to ch 2 of 0x04 failed with return of 0x05: I2C_ADDR_NAK
+	et:613714  Good:2827396741  4607/sec  bad:1  resetBus: 0
+
+
+	control write to ch 5 of 0x20 failed with return of 0x05: I2C_ADDR_NAK
+	et:618000  Good:2847141023  4607/sec  bad:2  resetBus: 0
+```
+
+### Up to July 11
+These are just the errors 31..47, the rest got overwritten in the logs. 
+I need to make a quiet mode and only report errors., so logs don't fill.
+
+Same May 22 build on same hardware as above. Here:
+et:3987113  Good:18,367,749,554  4606/sec  bad:47  resetBus: 0
+That is an error rate of *2.56 e-9* which falls short of 1 ppb (1 e-9)
+This is an error every 23.6 hours
+```
+	..........'.......control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:2597117  Good:11963448894  4606/sec  bad:31  resetBus: 0
+
+	Error: control read value=0x0F
+	et:2615621  Good:12048702662  4606/sec  bad:32  resetBus: 0
+
+	..........'..........'.......Error: control read value=0x9F
+	et:2758947  Good:12709081254  4606/sec  bad:33  resetBus: 0
+
+	..........'..........'..........'....Error: control read value=0x00
+	et:2768914  Good:12755003908  4606/sec  bad:34  resetBus: 0
+	......'..........'........control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:2768938  Good:12755112671  4606/sec  bad:35  resetBus: 0
+
+	......control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:2771286  Good:12765930814  4606/sec  bad:36  resetBus: 0
+
+	....control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:2861224  Good:13180398519  4606/sec  bad:37  resetBus: 0
+
+	..........'..........'..........'..........'..control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+	et:2875782  Good:13247476654  4606/sec  bad:38  resetBus: 0
+
+	..........'..........'.......control write to ch 5 of 0x20 failed with return of 0x06: I2C_DATA_NAK
+	et:3045567  Good:14029737944  4606/sec  bad:39  resetBus: 0
+
+	.......control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:3132667  Good:14431044799  4606/sec  bad:40  resetBus: 0
+
+	.........Error: control read value=0xFF
+	et:3190629  Good:14698092493  4606/sec  bad:41  resetBus: 0
+
+	..........'..........'..........'....control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:3276694  Good:15094626250  4606/sec  bad:42  resetBus: 0
+
+	....control write to ch 3 of 0x08 failed with return of 0x06: I2C_DATA_NAK
+	et:3291005  Good:15160558400  4606/sec  bad:43  resetBus: 0
+
+	..........'..........'..........'..........'control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:3348340  Good:15424724843  4606/sec  bad:44  resetBus: 0
+
+	..........'..........'..........'..........'..........'........control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:3663778  Good:16878075234  4606/sec  bad:45  resetBus: 0
+
+	.........'..........'..........'control write to ch 4 of 0x10 failed with return of 0x06: I2C_DATA_NAK
+	et:3915630  Good:18038427194  4606/sec  bad:46  resetBus: 0
+
+	..........'..........'..........'..........'..........'...control write to ch 4 of 0x10 failed with return of 0x05: I2C_ADDR_NAK
+	et:3987113  Good:18367749554  4606/sec  bad:47  resetBus: 0
+
+```
+
 ### 2017 May 21
 good is a long... so 2**32 = 4,294,967,296 max
 So good overflowed at 258.5 hours, but et did not so suddenly the quotient good/time is really low!

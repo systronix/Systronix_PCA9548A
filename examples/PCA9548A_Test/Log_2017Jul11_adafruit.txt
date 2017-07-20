@@ -1,0 +1,55 @@
+..........'.......control read got 0 bytes, not 1
+control read failed with return of 0x04: I2C_TIMEOUT
+et:2597117  Good:11963448894  4606/sec  bad:31  resetBus: 0
+
+Error: control read value=0x0F
+et:2615621  Good:12048702662  4606/sec  bad:32  resetBus: 0
+
+..........'..........'.......Error: control read value=0x9F
+et:2758947  Good:12709081254  4606/sec  bad:33  resetBus: 0
+
+..........'..........'..........'....Error: control read value=0x00
+et:2768914  Good:12755003908  4606/sec  bad:34  resetBus: 0
+......'..........'........control read got 0 bytes, not 1
+control read failed with return of 0x04: I2C_TIMEOUT
+et:2768938  Good:12755112671  4606/sec  bad:35  resetBus: 0
+
+......control read got 0 bytes, not 1
+control read failed with return of 0x05: I2C_ADDR_NAK
+et:2771286  Good:12765930814  4606/sec  bad:36  resetBus: 0
+
+....control read got 0 bytes, not 1
+control read failed with return of 0x05: I2C_ADDR_NAK
+et:2861224  Good:13180398519  4606/sec  bad:37  resetBus: 0
+
+..........'..........'..........'..........'..control read got 0 bytes, not 1
+control read failed with return of 0x04: I2C_TIMEOUT
+et:2875782  Good:13247476654  4606/sec  bad:38  resetBus: 0
+
+..........'..........'.......control write to ch 5 of 0x20 failed with return of 0x06: I2C_DATA_NAK
+et:3045567  Good:14029737944  4606/sec  bad:39  resetBus: 0
+
+.......control read got 0 bytes, not 1
+control read failed with return of 0x05: I2C_ADDR_NAK
+et:3132667  Good:14431044799  4606/sec  bad:40  resetBus: 0
+
+..........'..........'..........'....control read got 0 bytes, not 1
+control read failed with return of 0x05: I2C_ADDR_NAK
+et:3276694  Good:15094626250  4606/sec  bad:42  resetBus: 0
+
+....control write to ch 3 of 0x08 failed with return of 0x06: I2C_DATA_NAK
+et:3291005  Good:15160558400  4606/sec  bad:43  resetBus: 0
+
+..........'..........'..........'..........'control read got 0 bytes, not 1
+control read failed with return of 0x05: I2C_ADDR_NAK
+et:3348340  Good:15424724843  4606/sec  bad:44  resetBus: 0
+
+..........'..........'..........'..........'..........'........control read got 0 bytes, not 1
+control read failed with return of 0x05: I2C_ADDR_NAK
+et:3663778  Good:16878075234  4606/sec  bad:45  resetBus: 0
+
+.........'..........'..........'control write to ch 4 of 0x10 failed with return of 0x06: I2C_DATA_NAK
+et:3915630  Good:18038427194  4606/sec  bad:46  resetBus: 0
+
+..........'..........'..........'..........'..........'...control write to ch 4 of 0x10 failed with return of 0x05: I2C_ADDR_NAK
+et:3987113  Good:18367749554  4606/sec  bad:47  resetBus: 0
