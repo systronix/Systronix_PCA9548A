@@ -4,6 +4,19 @@
 
 ## Adafruit breakout
 
+### 2017 Aug 21
+10.37 billion good, 6 bad, no resetBus
+
+```
+	et:2253000  Good:10378301746  4606/sec  bad:6  resetBus: 0
+```
+```
+	et:1391400  Good:6410109856  4606/sec  bad:4  resetBus: 0
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:1391575  Good:6410919491  4606/sec  bad:5  resetBus: 0
+```
+
 ### 2017 Jul 20
 This is really strange: no changes to the hardware or setup, just a restart.
 Yet somehow the same test program is working better.
