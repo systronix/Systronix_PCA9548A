@@ -43,15 +43,16 @@ uint8_t config_value;
 uint8_t config_tmp275;
 
 
-Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);    
+Systronix_PCA9548A PCA9548A_70;
 
-Systronix_TMP275 Mux0Temp1(TMP275_SLAVE_ADDR_1);
-Systronix_TMP275 Mux1Temp1(TMP275_SLAVE_ADDR_1);
-Systronix_TMP275 Mux2Temp1(TMP275_SLAVE_ADDR_1);
+Systronix_TMP275 Mux0Temp0;
+Systronix_TMP275 Mux1Temp0;
+Systronix_TMP275 Mux2Temp0;
 
 const char * text_ptr;
 
 uint32_t startuptime = 0;
+uint32_t iter = 0;
 
 /* ========== SETUP ========== */
 void setup(void) 
@@ -90,8 +91,23 @@ void setup(void)
 #endif
    
   
-  // start PCA9548A library
-  PCA9548A_70.begin();
+// start PCA9548A library
+	PCA9548A_70.setup (PCA9548A_SLAVE_ADDR_0, Wire1, (char*)"Wire1");
+	PCA9548A_70.begin (I2C_PINS_29_30, I2C_RATE_100);
+	PCA9548A_70.init ();
+
+// start TMP275 libraries
+	Mux0Temp0.setup(TMP275_SLAVE_ADDR_0, Wire1, (char*)"Wire1");
+	Mux0Temp0.begin (I2C_PINS_29_30, I2C_RATE_100);
+	Mux0Temp0.init (TMP275_CFG_RES12);
+
+	Mux1Temp0.setup(TMP275_SLAVE_ADDR_0, Wire1, (char*)"Wire1");
+	Mux1Temp0.begin (I2C_PINS_29_30, I2C_RATE_100);
+	Mux1Temp0.init (TMP275_CFG_RES12);
+
+	Mux2Temp0.setup(TMP275_SLAVE_ADDR_0, Wire1, (char*)"Wire1");
+	Mux2Temp0.begin (I2C_PINS_29_30, I2C_RATE_100);
+	Mux2Temp0.init (TMP275_CFG_RES12);
 
   config_value = PCA9548A_PORT_0_ENABLE;  // 
 
@@ -103,8 +119,8 @@ void setup(void)
     Serial.printf(" Attempt #%u: Init control reg to 0x%.2X - ", iter, config_value); 
     if (SUCCESS != stat)
     {
-      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("failed - returned 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+      Serial.printf("failed - returned 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
 #if defined I2C_T3_H 
     // reset I2C just to be safe
     // we may have interrupted a message in process of loading new code or Teensy reset
@@ -180,94 +196,94 @@ void loop(void)
   if (verbose) Serial.printf("@%.4u  ", millis());
   
   // Enable Mux Channel 0
-  stat = PCA9548A_70.controlWrite(PCA9548A_PORT_0_ENABLE);
+  stat = PCA9548A_70.control_write(PCA9548A_PORT_0_ENABLE);
   if (SUCCESS != stat)
   {
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf("mux0 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+    Serial.printf("mux0 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
     delay(dtime/2); // don't blast repeat failures too quickly
   }
   else
   {
-    stat = PCA9548A_70.controlRead(&control_read_val);
+    stat = PCA9548A_70.control_read(&control_read_val);
     if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
   }
 
-  // Init Mux0Temp1 Sensors
-  stat = Mux0Temp1.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp1 init failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.ret_val);
+  // Init Mux0Temp0 Sensors
+  stat = Mux0Temp0.init(TMP275_CFG_RES12);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp0 init failed with return of 0x%.2X: %s\r\n", Mux0Temp0.error.error_val, Mux0Temp0.status_text[Mux0Temp0.error.error_val]);
 
   // leave the pointer set to read temperature
-  stat = Mux0Temp1.pointerWrite(TMP275_TEMP_REG_PTR);
+  stat = Mux0Temp0.pointer_write(TMP275_TEMP_REG_PTR);
 
   // Read Temp on sensors Mux Channel 0
   rawtemp=0;
   temp=0.0;
-  stat = Mux0Temp1.register16Read (&rawtemp);
-  if (stat != SUCCESS) Serial.printf("Mux0Temp1 error, stat=%u\r\n", stat);
-  temp = Mux0Temp1.raw12_to_c(rawtemp);
-  Serial.printf ("Mux0Temp1 %6.4f C\r\n", temp);
+  stat = Mux0Temp0.register16_read (&rawtemp);
+  if (stat != SUCCESS) Serial.printf("Mux0Temp0 error, stat=%u\r\n", stat);
+  temp = Mux0Temp0.raw12_to_c(rawtemp);
+  Serial.printf ("Mux0Temp0 %6.4f C\r\n", temp);
 
   // Enable Mux Channel 1
-  stat = PCA9548A_70.controlWrite(PCA9548A_PORT_1_ENABLE);
+  stat = PCA9548A_70.control_write(PCA9548A_PORT_1_ENABLE);
   if (SUCCESS != stat)
   {
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf("mux1 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+    Serial.printf("mux1 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
     delay(dtime/2); // don't blast repeat failures too quickly
   }
   else
   {
-    stat = PCA9548A_70.controlRead(&control_read_val);
+    stat = PCA9548A_70.control_read(&control_read_val);
     if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
   }  
 
-  // Init Mux1Temp1 Sensors
-  stat = Mux1Temp1.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux1Temp1 init failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.ret_val);
+  // Init Mux1Temp0 Sensors
+  stat = Mux1Temp0.init(TMP275_CFG_RES12);
+  if (SUCCESS != stat) Serial.printf(" Mux1Temp0 init failed with return of 0x%.2X: %s\r\n", Mux1Temp0.error.error_val, Mux1Temp0.status_text[Mux1Temp0.error.error_val]);
 
   // leave the pointer set to read temperature
-  stat = Mux1Temp1.pointerWrite(TMP275_TEMP_REG_PTR);
+  stat = Mux1Temp0.pointer_write(TMP275_TEMP_REG_PTR);
 
   // Read Temp on sensors Mux Channel 1
   rawtemp=0;
   temp=0.0;
-  stat = Mux1Temp1.register16Read (&rawtemp);
-  if (stat != SUCCESS) Serial.printf("Mux1Temp1 error, stat=%u\r\n", stat);
-  temp = Mux1Temp1.raw12_to_c(rawtemp);
-  Serial.printf ("Mux1Temp1 %6.4f C\r\n", temp);
+  stat = Mux1Temp0.register16_read (&rawtemp);
+  if (stat != SUCCESS) Serial.printf("Mux1Temp0 error, stat=%u\r\n", stat);
+  temp = Mux1Temp0.raw12_to_c(rawtemp);
+  Serial.printf ("Mux1Temp0 %6.4f C\r\n", temp);
 
   // Enable Mux Channel 2
-  stat = PCA9548A_70.controlWrite(PCA9548A_PORT_2_ENABLE);
+  stat = PCA9548A_70.control_write(PCA9548A_PORT_2_ENABLE);
   if (SUCCESS != stat)
   {
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf("mux2 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+    Serial.printf("mux2 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
     delay(dtime/2); // don't blast repeat failures too quickly
   }
   else
   {
-    stat = PCA9548A_70.controlRead(&control_read_val);
+    stat = PCA9548A_70.control_read(&control_read_val);
     if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
   }  
 
-  // Init Mux2Temp1 Sensors
-  stat = Mux2Temp1.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux2Temp1 init failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.ret_val);
+  // Init Mux2Temp0 Sensors
+  stat = Mux2Temp0.init(TMP275_CFG_RES12);
+  if (SUCCESS != stat) Serial.printf(" Mux2Temp0 init failed with return of 0x%.2X: %s\r\n", Mux2Temp0.error.error_val, Mux2Temp0.status_text[Mux2Temp0.error.error_val]);
 
   // leave the pointer set to read temperature
-  stat = Mux2Temp1.pointerWrite(TMP275_TEMP_REG_PTR);
+  stat = Mux2Temp0.pointer_write(TMP275_TEMP_REG_PTR);
 
   // Read Temp on sensors Mux Channel 1
   rawtemp=0;
   temp=0.0;
-  stat = Mux2Temp1.register16Read (&rawtemp);
-  if (stat != SUCCESS) Serial.printf("Mux2Temp1 error, stat=%u\r\n", stat);
-  temp = Mux2Temp1.raw12_to_c(rawtemp);
-  Serial.printf ("Mux2Temp1 %6.4f C\r\n", temp);  
+  stat = Mux2Temp0.register16_read (&rawtemp);
+  if (stat != SUCCESS) Serial.printf("Mux2Temp0 error, stat=%u\r\n", stat);
+  temp = Mux2Temp0.raw12_to_c(rawtemp);
+  Serial.printf ("Mux2Temp0 %6.4f C\r\n", temp);
 
 
   Serial.println();
