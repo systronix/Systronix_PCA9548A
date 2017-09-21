@@ -43,22 +43,41 @@ uint8_t config_value;
 uint8_t config_tmp275;
 
 
-Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);    
+//Systronix_PCA9548A PCA9548A_70(PCA9548A_SLAVE_ADDR_0);
+Systronix_PCA9548A PCA9548A_70;
 
-/**
-TMP102 on board SALT has same address as TMP275 0 so don't use that
-*/
+//
+//TMP102 on board SALT has same address as TMP275 0 so don't use that
+//
 
-Systronix_TMP275 Mux0Temp1(TMP275_SLAVE_ADDR_1);  // D1 ambient temp
-Systronix_TMP275 Mux0Temp2(TMP275_SLAVE_ADDR_2);  // D1 C1 outside
-Systronix_TMP275 Mux0Temp3(TMP275_SLAVE_ADDR_3);  // D1 C1 inside
-Systronix_TMP275 Mux0Temp4(TMP275_SLAVE_ADDR_4);
-Systronix_TMP275 Mux0Temp5(TMP275_SLAVE_ADDR_5);
-Systronix_TMP275 Mux0Temp6(TMP275_SLAVE_ADDR_6);
-Systronix_TMP275 Mux0Temp7(TMP275_SLAVE_ADDR_7);
+//Systronix_TMP275 Mux0Temp1(TMP275_SLAVE_ADDR_1);  // D1 ambient temp
+Systronix_TMP275 Mux0Temp1;
 
-Systronix_TMP275 Mux1Temp1(TMP275_SLAVE_ADDR_1);
-Systronix_TMP275 Mux2Temp1(TMP275_SLAVE_ADDR_1);
+//Systronix_TMP275 Mux0Temp2(TMP275_SLAVE_ADDR_2);  // D1 C1 outside
+Systronix_TMP275 Mux0Temp2;
+
+//Systronix_TMP275 Mux0Temp3(TMP275_SLAVE_ADDR_3);  // D1 C1 inside
+Systronix_TMP275 Mux0Temp3;
+
+//Systronix_TMP275 Mux0Temp4(TMP275_SLAVE_ADDR_4);
+Systronix_TMP275 Mux0Temp4;
+
+//Systronix_TMP275 Mux0Temp5(TMP275_SLAVE_ADDR_5);
+Systronix_TMP275 Mux0Temp5;
+
+//Systronix_TMP275 Mux0Temp6(TMP275_SLAVE_ADDR_6);
+Systronix_TMP275 Mux0Temp6;
+
+//Systronix_TMP275 Mux0Temp7(TMP275_SLAVE_ADDR_7);
+Systronix_TMP275 Mux0Temp7;
+
+
+//Systronix_TMP275 Mux1Temp1(TMP275_SLAVE_ADDR_1);
+Systronix_TMP275 Mux1Temp1;
+
+//Systronix_TMP275 Mux2Temp1(TMP275_SLAVE_ADDR_1);
+Systronix_TMP275 Mux2Temp1;
+
 
 const char * text_ptr;
 
@@ -72,6 +91,50 @@ boolean verbose = false;
 /* ========== SETUP ========== */
 void setup(void) 
 {
+PCA9548A_70.setup (PCA9548A_SLAVE_ADDR_0, Wire1, (char*)"Wire1");
+PCA9548A_70.begin (I2C_PINS_29_30, I2C_RATE_100);
+PCA9548A_70.init ();
+
+/**
+TMP102 on board SALT has same address as TMP275 0 so don't use that
+*/
+
+Mux0Temp1.setup (TMP275_SLAVE_ADDR_1, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux0Temp1.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux0Temp1.init (TMP275_CFG_RES12);
+
+Mux0Temp2.setup (TMP275_SLAVE_ADDR_2, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux0Temp2.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux0Temp2.init (TMP275_CFG_RES12);
+
+Mux0Temp3.setup (TMP275_SLAVE_ADDR_3, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux0Temp3.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux0Temp3.init (TMP275_CFG_RES12);
+
+Mux0Temp4.setup (TMP275_SLAVE_ADDR_4, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux0Temp4.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux0Temp4.init (TMP275_CFG_RES12);
+
+Mux0Temp5.setup (TMP275_SLAVE_ADDR_5, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux0Temp5.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux0Temp5.init (TMP275_CFG_RES12);
+
+Mux0Temp6.setup (TMP275_SLAVE_ADDR_6, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux0Temp6.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux0Temp6.init (TMP275_CFG_RES12);
+
+Mux0Temp7.setup (TMP275_SLAVE_ADDR_7, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux0Temp7.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux0Temp7.init (TMP275_CFG_RES12);
+
+
+Mux1Temp1.setup (TMP275_SLAVE_ADDR_1, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux1Temp1.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux1Temp1.init (TMP275_CFG_RES12);
+
+Mux2Temp1.setup (TMP275_SLAVE_ADDR_1, Wire1, (char*)"Wire1");	// initialize this sensor instance
+Mux2Temp1.begin (I2C_PINS_29_30, I2C_RATE_100);
+Mux2Temp1.init (TMP275_CFG_RES12);
 
   uint8_t iter = 0;
 
@@ -108,7 +171,7 @@ void setup(void)
    
   
   // start PCA9548A library
-  PCA9548A_70.begin();
+//  PCA9548A_70.begin();
 
   config_value = PCA9548A_PORT_0_ENABLE;  // 
 
@@ -120,8 +183,8 @@ void setup(void)
     Serial.printf(" Attempt #%u: Init control reg to 0x%.2X - ", iter, config_value); 
     if (SUCCESS != stat)
     {
-      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-      Serial.printf("failed - returned 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
+      text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+      Serial.printf("failed - returned 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
 #if defined I2C_T3_H 
     // reset I2C just to be safe
     // we may have interrupted a message in process of loading new code or Teensy reset
@@ -211,33 +274,33 @@ void loop(void)
   Serial.printf("@%.4u\r\n", millis()/1000); 
   
   // Enable Mux Channel 0
-  stat = PCA9548A_70.controlWrite(PCA9548A_PORT_0_ENABLE);
+  stat = PCA9548A_70.control_write(PCA9548A_PORT_0_ENABLE);
   if (SUCCESS != stat)
   {
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
-    Serial.printf("mux0 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.ret_val, text_ptr);
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.ret_val]);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+    Serial.printf("mux0 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
     delay(dtime/2); // don't blast repeat failures too quickly
   }
   else
   {
-    stat = PCA9548A_70.controlRead(&control_read_val);
+    stat = PCA9548A_70.control_read(&control_read_val);
     if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
   }
 
   // ------------------------------
   // Init Mux0Temp7 Sensors
   stat = Mux0Temp7.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp7 init failed with return of 0x%.2X: %s\r\n", Mux0Temp7.error.ret_val);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp7 init failed with return of 0x%.2X: %s\r\n", Mux0Temp7.error.error_val);
 
   // leave the pointer set to read temperature
-  stat = Mux0Temp7.pointerWrite(TMP275_TEMP_REG_PTR);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp7 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp7.error.ret_val);    
+  stat = Mux0Temp7.pointer_write(TMP275_TEMP_REG_PTR);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp7 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp7.error.error_val);    
 
   // Read Temp on Mux0Temp7
   rawtemp=0;
   temp=0.0;
-  stat = Mux0Temp7.register16Read (&rawtemp);
+  stat = Mux0Temp7.register16_read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp7 error, stat=%u\r\n", stat);
   temp = Mux0Temp7.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp7 %6.4f F\r\n", temp);
@@ -245,16 +308,16 @@ void loop(void)
     // ------------------------------
   // Init Mux0Temp6 Sensors
   stat = Mux0Temp6.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp6 init failed with return of 0x%.2X: %s\r\n", Mux0Temp6.error.ret_val);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp6 init failed with return of 0x%.2X: %s\r\n", Mux0Temp6.error.error_val);
 
   // leave the pointer set to read temperature
-  stat = Mux0Temp6.pointerWrite(TMP275_TEMP_REG_PTR);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp6 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp6.error.ret_val);  
+  stat = Mux0Temp6.pointer_write(TMP275_TEMP_REG_PTR);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp6 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp6.error.error_val);  
 
   // Read Temp on Mux0Temp6
   rawtemp=0;
   temp=0.0;
-  stat = Mux0Temp6.register16Read (&rawtemp);
+  stat = Mux0Temp6.register16_read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp6 error, stat=%u\r\n", stat);
   temp = Mux0Temp6.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp6 %6.4f F\r\n", temp);  
@@ -262,16 +325,16 @@ void loop(void)
   // ------------------------------
   // Init Mux0Temp5 Sensors
   stat = Mux0Temp5.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp5 init failed with return of 0x%.2X: %s\r\n", Mux0Temp5.error.ret_val);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp5 init failed with return of 0x%.2X: %s\r\n", Mux0Temp5.error.error_val);
 
   // leave the pointer set to read temperature
-  stat = Mux0Temp5.pointerWrite(TMP275_TEMP_REG_PTR);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp5 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp5.error.ret_val);  
+  stat = Mux0Temp5.pointer_write(TMP275_TEMP_REG_PTR);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp5 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp5.error.error_val);  
 
   // Read Temp on Mux0Temp5
   rawtemp=0;
   temp=0.0;
-  stat = Mux0Temp5.register16Read (&rawtemp);
+  stat = Mux0Temp5.register16_read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp5 error, stat=%u\r\n", stat);
   temp = Mux0Temp5.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp5 %6.4f F\r\n", temp);  
@@ -279,16 +342,16 @@ void loop(void)
   // ------------------------------
   // Init Mux0Temp4 Sensors
   stat = Mux0Temp4.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp4 init failed with return of 0x%.2X: %s\r\n", Mux0Temp4.error.ret_val);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp4 init failed with return of 0x%.2X: %s\r\n", Mux0Temp4.error.error_val);
 
   // leave the pointer set to read temperature
-  stat = Mux0Temp4.pointerWrite(TMP275_TEMP_REG_PTR);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp4 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp4.error.ret_val);  
+  stat = Mux0Temp4.pointer_write(TMP275_TEMP_REG_PTR);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp4 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp4.error.error_val);  
 
   // Read Temp on Mux0Temp4
   rawtemp=0;
   temp=0.0;
-  stat = Mux0Temp4.register16Read (&rawtemp);
+  stat = Mux0Temp4.register16_read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp4 error, stat=%u\r\n", stat);
   temp = Mux0Temp4.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp4 %6.4f F\r\n", temp);    
@@ -297,16 +360,16 @@ void loop(void)
   // ------------------------------
   // Init Mux0Temp3 Sensors
   stat = Mux0Temp3.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp3 init failed with return of 0x%.2X: %s\r\n", Mux0Temp3.error.ret_val);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp3 init failed with return of 0x%.2X: %s\r\n", Mux0Temp3.error.error_val);
 
   // leave the pointer set to read temperature
-  stat = Mux0Temp3.pointerWrite(TMP275_TEMP_REG_PTR);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp3 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp3.error.ret_val);  
+  stat = Mux0Temp3.pointer_write(TMP275_TEMP_REG_PTR);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp3 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp3.error.error_val);  
 
   // Read Temp on Mux0Temp3
   rawtemp=0;
   temp=0.0;
-  stat = Mux0Temp3.register16Read (&rawtemp);
+  stat = Mux0Temp3.register16_read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp3 error, stat=%u\r\n", stat);
   temp = Mux0Temp3.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp3 %6.4f F\r\n", temp);  
@@ -315,16 +378,16 @@ void loop(void)
   // ------------------------------
   // Init Mux0Temp2 Sensors
   stat = Mux0Temp2.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp2 init failed with return of 0x%.2X: %s\r\n", Mux0Temp2.error.ret_val);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp2 init failed with return of 0x%.2X: %s\r\n", Mux0Temp2.error.error_val);
 
   // leave the pointer set to read temperature
-  stat = Mux0Temp2.pointerWrite(TMP275_TEMP_REG_PTR);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp2 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp2.error.ret_val);
+  stat = Mux0Temp2.pointer_write(TMP275_TEMP_REG_PTR);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp2 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp2.error.error_val);
 
   // Read Temp on Mux0Temp2
   rawtemp=0;
   temp=0.0;
-  stat = Mux0Temp2.register16Read (&rawtemp);
+  stat = Mux0Temp2.register16_read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp2 error, stat=%u\r\n", stat);
   temp = Mux0Temp2.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp2 %6.4f F\r\n", temp);
@@ -332,16 +395,16 @@ void loop(void)
   // ------------------------------
   // Init Mux0Temp1 Sensors
   stat = Mux0Temp1.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp1 init failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.ret_val);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp1 init failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.error_val);
 
   // leave the pointer set to read temperature
-  stat = Mux0Temp1.pointerWrite(TMP275_TEMP_REG_PTR);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp1 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.ret_val);
+  stat = Mux0Temp1.pointer_write(TMP275_TEMP_REG_PTR);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp1 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp1.error.error_val);
 
   // Read Temp on Mux0Temp1
   rawtemp=0;
   temp=0.0;
-  stat = Mux0Temp1.register16Read (&rawtemp);
+  stat = Mux0Temp1.register16_read (&rawtemp);
   if (stat != SUCCESS) Serial.printf("Mux0Temp1 error, stat=%u\r\n", stat);
   temp = Mux0Temp1.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp1 %6.4f F\r\n", temp);  

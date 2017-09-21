@@ -241,11 +241,11 @@ void loop(void)
   {
     if (verbose) Serial.printf("@%.4u ch %u", millis(), tui);
 
-    stat = PCA9548A_70.control_write(PCA9548A_70.channel[tui]);
+    stat = PCA9548A_70.control_write(PCA9548A_70.port[tui]);
     if (SUCCESS != stat)
     {
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
-      Serial.printf("control write to ch %u of 0x%.2X failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.channel[tui], PCA9548A_70.error.error_val, text_ptr);
+      Serial.printf("control write to ch %u of 0x%.2X failed with return of 0x%.2X: %s\r\n", tui, PCA9548A_70.port[tui], PCA9548A_70.error.error_val, text_ptr);
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
@@ -259,7 +259,7 @@ void loop(void)
       delay(dtime/2); // don't blast repeat failures too quickly
       break;
     }
-    else if (control_read_val != PCA9548A_70.channel[tui])
+    else if (control_read_val != PCA9548A_70.port[tui])
     {
       // only check for correct value if I2C message was OK...
       // ... if here, message was successful but somehow value is wrong
