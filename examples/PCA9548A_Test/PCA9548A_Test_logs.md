@@ -3,6 +3,16 @@
 # i2c_t3 Library
 
 ## Adafruit breakout
+### 2017 Sep 09
+17.997 billion good, 12 bad, no resets
+```
+	et:3906600  Good:17997033298  4606/sec  bad:12  resetBus: 0
+```
+```
+..........'.....control read got 0 bytes, not 1
+control read failed with return of 0x05: I2C_ADDR_NAK
+et:3810195  Good:17552862098  4606/sec  bad:12  resetBus: 0
+```
 
 ### 2017 Aug 21
 10.37 billion good, 6 bad, no resetBus
