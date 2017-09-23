@@ -89,7 +89,8 @@ void setup(void)
 #if defined I2C_T3_H 
   Serial.printf("Using i2c_t3 I2C library for Teensy\r\n");
 #endif
-   
+
+// Use Wire1 on SALT 2.2 J1 with or without PowerFRU!   
   
 // start PCA9548A library
 	PCA9548A_70.setup (PCA9548A_SLAVE_ADDR_0, Wire1, (char*)"Wire1");
@@ -116,7 +117,7 @@ void setup(void)
   {
     iter++;
     stat = PCA9548A_70.init(config_value);
-    Serial.printf(" Attempt #%u: Init control reg to 0x%.2X - ", iter, config_value); 
+    Serial.printf(" Attempt #%u: Init mux control reg to 0x%.2X - ", iter, config_value); 
     if (SUCCESS != stat)
     {
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
@@ -166,7 +167,7 @@ void loop(void)
   uint8_t stat=0;  // status flag
   uint8_t control_read_val = 0;
   uint16_t rawtemp;
-  float temp;
+  float temp = -99;
 
 
   oldtime = millis()/1000;

@@ -301,7 +301,7 @@ void loop(void)
   rawtemp=0;
   temp=0.0;
   stat = Mux0Temp7.register16_read (&rawtemp);
-  if (stat != SUCCESS) Serial.printf("Mux0Temp7 error, stat=%u\r\n", stat);
+  if (stat != SUCCESS) Serial.printf("Mux0Temp7 error, stat=0x%.2X\r\n", stat);
   temp = Mux0Temp7.raw12_to_f(rawtemp);
   Serial.printf ("Mux0Temp7 %6.4f F\r\n", temp);
 

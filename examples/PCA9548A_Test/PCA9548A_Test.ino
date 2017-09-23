@@ -109,7 +109,8 @@ void setup(void)
   if (0xFFFFFFFFFFFFFFFE < UINT64_MAX) Serial.println ("Test of UINT64_MAX seems to pass");
   
   // start PCA9548A library
-  PCA9548A_70.setup( PCA9548A_SLAVE_ADDR_0, Wire1, (char*)"Wire");
+  // Use Wire1 on SALT 2.2 J1 with or without PowerFRU!
+  PCA9548A_70.setup( PCA9548A_SLAVE_ADDR_0, Wire, (char*)"Wire");
   PCA9548A_70.begin();
 
   config_value = PCA9548A_PORT_0_ENABLE;  // 
