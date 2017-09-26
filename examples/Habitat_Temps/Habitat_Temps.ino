@@ -36,7 +36,7 @@ My head hurts every time I try to figure out which is "best" for us.
  */
  byte DEBUG = 3;
 
-uint16_t dtime = 1000;  // delay in loop
+uint16_t dtime = 5000;  // delay in loop
 
 uint8_t config_value;
 
@@ -148,9 +148,9 @@ Mux2Temp1.init (TMP275_CFG_RES12);
   // Wait here for 10 seconds to see if we will use Serial Monitor, so output is not lost
   while((!Serial) && (millis()<10000));    // wait until serial monitor is open or timeout, which seems to fall through
  
-  Serial.printf("\r\nPCA9548A and TMP275 Test Code at 0x%.2X\r\n", PCA9548A_70.base_get());
+  Serial.printf("\r\nHabitat Temp Monitor at MUX address 0x%.2X\r\n", PCA9548A_70.base_get());
 
-    Serial.printf("Build %s - %s\r\n%s\r\n", __DATE__, __TIME__, __FILE__);
+  Serial.printf("Build %s - %s\r\n%s\r\n", __DATE__, __TIME__, __FILE__);
 
 #if defined(__MKL26Z64__)
   Serial.println( "CPU is T_LC");
@@ -279,7 +279,6 @@ void loop(void)
   {
     text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
     Serial.printf("mux0 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
-    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
     delay(dtime/2); // don't blast repeat failures too quickly
   }
   else
@@ -291,11 +290,11 @@ void loop(void)
   // ------------------------------
   // Init Mux0Temp7 Sensors
   stat = Mux0Temp7.init(TMP275_CFG_RES12);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp7 init failed with return of 0x%.2X: %s\r\n", Mux0Temp7.error.error_val);
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp7 init failed with return of 0x%.2X: %s\r\n", Mux0Temp7.error.error_val, Mux0Temp7.status_text[Mux0Temp7.error.error_val]);
 
   // leave the pointer set to read temperature
   stat = Mux0Temp7.pointer_write(TMP275_TEMP_REG_PTR);
-  if (SUCCESS != stat) Serial.printf(" Mux0Temp7 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp7.error.error_val);    
+  if (SUCCESS != stat) Serial.printf(" Mux0Temp7 ptr write failed with return of 0x%.2X: %s\r\n", Mux0Temp7.error.error_val, Mux0Temp7.status_text[Mux0Temp7.error.error_val]);    
 
   // Read Temp on Mux0Temp7
   rawtemp=0;
