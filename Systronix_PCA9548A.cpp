@@ -172,7 +172,7 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 	ret_val = control_write (control);		// if successful this means we got two ACKs from slave device
 	if (SUCCESS != ret_val)
 		{
-//		Serial.printf("9548A lib init %s at base 0x%.2X failed with %s (0x%.2X)\r\n", _wire_name, _base, status_text[error.error_val], error.error_val);
+		Serial.printf("9548A lib init %s at base 0x%.2X failed with %s (0x%.2X)\r\n", _wire_name, _base, status_text[error.error_val], error.error_val);
 		error.exists = false;				// only place error.exists is set false
 		return ABSENT;
 		}

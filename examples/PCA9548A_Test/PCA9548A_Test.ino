@@ -97,20 +97,20 @@ void setup(void)
   Serial.printf("Using i2c_t3 I2C library for Teensy\r\n");
 #endif
 
-  uint64_t uint64_test = 0;
-  uint64_test = UINT64_MAX;
-  // Serial.println(uint64_test);
-  uint64_test++;
-  // Serial.println(uint64_test);
-  Serial.printf("More than 32 bits? %llu, 0x%llX\r\n", uint64_test, uint64_test);
-  Serial.printf ("UINT32_MAX=0x%X, UINT64_MAX=0x%llX\r\n", UINT32_MAX, UINT64_MAX);
-  Serial.printf ("UINT64_MAX=0x%llX, UINT32_MAX=0x%X\r\n", UINT64_MAX, UINT32_MAX);
-  Serial.printf ("UINT32_MAX=%u, UINT64_MAX=%llu\r\n", UINT32_MAX, UINT64_MAX);
-  if (0xFFFFFFFFFFFFFFFE < UINT64_MAX) Serial.println ("Test of UINT64_MAX seems to pass");
+  // uint64_t uint64_test = 0;
+  // uint64_test = UINT64_MAX;
+  // // Serial.println(uint64_test);
+  // uint64_test++;
+  // // Serial.println(uint64_test);
+  // Serial.printf("More than 32 bits? %llu, 0x%llX\r\n", uint64_test, uint64_test);
+  // Serial.printf ("UINT32_MAX=0x%X, UINT64_MAX=0x%llX\r\n", UINT32_MAX, UINT64_MAX);
+  // Serial.printf ("UINT64_MAX=0x%llX, UINT32_MAX=0x%X\r\n", UINT64_MAX, UINT32_MAX);
+  // Serial.printf ("UINT32_MAX=%u, UINT64_MAX=%llu\r\n", UINT32_MAX, UINT64_MAX);
+  // if (0xFFFFFFFFFFFFFFFE < UINT64_MAX) Serial.println ("Test of UINT64_MAX seems to pass");
   
   // start PCA9548A library
   // Use Wire1 on SALT 2.2 J1 with or without PowerFRU!
-  PCA9548A_70.setup( PCA9548A_SLAVE_ADDR_0, Wire, (char*)"Wire");
+  PCA9548A_70.setup( PCA9548A_SLAVE_ADDR_0, Wire1, (char*)"Wire1");
   PCA9548A_70.begin();
 
   config_value = PCA9548A_PORT_0_ENABLE;  // 
@@ -125,16 +125,16 @@ void setup(void)
     {
       text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
       Serial.printf("failed - returned 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
-#if defined I2C_T3_H 
-    // reset I2C just to be safe
-    // we may have interrupted a message in process of loading new code or Teensy reset
-    Wire.resetBus();
-    Serial.printf("Tried resetBus()\r\n");
-#else
-    // TODO toggle SDA 10X while SCL is high to force any incomplete I2C message to finish
-    // how to do this without clobbering I2C library already set up?
-    Serial.printf("TODO: resetBus() for Wire library!\r\n");
-#endif 
+// #if defined I2C_T3_H 
+//     // reset I2C just to be safe
+//     // we may have interrupted a message in process of loading new code or Teensy reset
+//     Wire.resetBus();
+//     Serial.printf("Tried resetBus()\r\n");
+// #else
+//     // TODO toggle SDA 10X while SCL is high to force any incomplete I2C message to finish
+//     // how to do this without clobbering I2C library already set up?
+//     Serial.printf("TODO: resetBus() for Wire library!\r\n");
+// #endif 
     delay(1000);     
     }
     else
