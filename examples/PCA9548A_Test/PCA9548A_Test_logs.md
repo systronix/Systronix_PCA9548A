@@ -2,16 +2,28 @@
 
 # i2c_t3 Library
 
-## Adafruit breakout
+## Adafruit 
+### 2017 Sep 30
+26.3 billion good, 27 bad, no resets
+```
+	control read got 0 bytes, not 1
+	control read failed with return of 0x04: I2C_TIMEOUT
+
+	et:4294967  Good:26302723648  6124/sec  bad:27  resetBus: 0
+	control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+
+et:4294967  Good:26329049883  6130/sec  bad:28  resetBus: 0
+```
 ### 2017 Sep 09
 17.997 billion good, 12 bad, no resets
 ```
 	et:3906600  Good:17997033298  4606/sec  bad:12  resetBus: 0
 ```
 ```
-..........'.....control read got 0 bytes, not 1
-control read failed with return of 0x05: I2C_ADDR_NAK
-et:3810195  Good:17552862098  4606/sec  bad:12  resetBus: 0
+	..........'.....control read got 0 bytes, not 1
+	control read failed with return of 0x05: I2C_ADDR_NAK
+	et:3810195  Good:17552862098  4606/sec  bad:12  resetBus: 0
 ```
 
 ### 2017 Aug 21
