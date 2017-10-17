@@ -169,13 +169,23 @@ uint8_t Systronix_PCA9548A::init (uint8_t control)
 	error.exists = true;					// so we can use control_write(); we'll find out later if device does not exist
 
 //	Serial.printf("9548A lib init %s at base 0x%.2X\r\n", _wire_name, _base);
-	ret_val = control_write (control);		// if successful this means we got two ACKs from slave device
+	ret_val = control_write (0x5A);			// if successful this means we got two ACKs from slave device and should have a recognizable pattern in control reg
 	if (SUCCESS != ret_val)
 		{
 		Serial.printf("9548A lib init %s at base 0x%.2X failed with %s (0x%.2X)\r\n", _wire_name, _base, status_text[error.error_val], error.error_val);
-		error.exists = false;				// only place error.exists is set false
+		error.exists = false;				// this function only place error.exists is set false
 		return ABSENT;
 		}
+
+	control_read (&ret_val);				// is the pattern in the control reg?
+	if (0x5A != ret_val)
+		{									// nope
+		Serial.printf("9548A lib init %s at base 0x%.2X failed control reg test write; wr: 0x%.2X; got: 0x%.2X\r\n", _wire_name, _base, 0x5A, ret_val);
+		error.exists = false;				// this function only place error.exists is set false
+		return ABSENT;
+		}
+
+	control_write (control);				// working so set the correct initial value
 
 	return SUCCESS;
 	}
