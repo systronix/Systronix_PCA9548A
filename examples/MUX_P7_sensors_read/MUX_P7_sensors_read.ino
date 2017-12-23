@@ -184,8 +184,8 @@ void setup(void)
 	delay(50);
 
 	//                0123456789ABCDEF0123456789ABCDEF
-	Serial1.printf ("dMUX mfg test    \r");				// in case this code ever ends up in a habitat
-	Serial2.printf ("dMUX mfg test    \r");
+	Serial1.printf ("dMUX P7 sensor rd\r");				// in case this code ever ends up in a habitat
+	Serial2.printf ("dMUX P7 sensor rd\r");
 
 	pinMode(PERIPH_RST, OUTPUT);						// NOTE: SALT 2.0 resetting the FETs 9557 (U5) allows the gates of the FETs to float; U5 should be immediately initialized following reset
 	pinMode (ETHER_RST, OUTPUT);
@@ -357,7 +357,7 @@ void setup(void)
 
 
 //============================================================================================================
-
+/*
 	fru.setup (I2C_FRU);								// POWER FRU
 	fru.begin ();
 	ret_val = fru.init ();
@@ -366,8 +366,8 @@ void setup(void)
 		if (SUCCESS != fru.pin_mobility_test (0))
 			{
 			display.display_line_write ("FRU mobility failed", ILI9341_RED);
-			fail_led();
-			while (1);
+//			fail_led();
+//			while (1);
 			}
 		display.display_line_write ("FRU mobility OK", ILI9341_GREEN);
 
@@ -377,8 +377,8 @@ void setup(void)
 		{
 		display.display_line_write ("FRU init failed", ILI9341_RED);
 		Serial.printf ("fru ini fail: 0x%.2X\n", ret_val);
-		fail_led();
-		while (1);
+//		fail_led();
+//		while (1);
 		}
 
 	fru.sensor_reset (true);							// assert reset to the mfg test hardware
@@ -388,7 +388,7 @@ void setup(void)
 	fru.update_manual();
 
 	display.display_line_write ("FRU init OK", ILI9341_GREEN);
-
+*/
 
 //============================================================================================================
 // setup port7 devices
