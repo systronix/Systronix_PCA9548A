@@ -333,7 +333,6 @@ void loop(void)
   SensorPtr = &Mux0Temp1;   // EC Top
   stat = sensor_read (SensorPtr);
 
-
   SensorPtr = &Mux0Temp2;   // EC Bot
   stat = sensor_read (SensorPtr);
 
@@ -353,8 +352,6 @@ void loop(void)
 
 
   // ------------------------------
-
-  // Init Mux1Temp1 Sensors
   SensorPtr = &Mux1Temp1;   
   stat = sensor_read (SensorPtr);
 
@@ -364,6 +361,29 @@ void loop(void)
   SensorPtr = &Mux1Temp3;
   stat = sensor_read (SensorPtr);
 
+    // Enable Mux Channel 2
+  stat = PCA9548A_70.control_write(PCA9548A_PORT_2_ENABLE);
+  if (SUCCESS != stat)
+  {
+    text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+    Serial.printf("mux2 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
+    delay(dtime/2); // don't blast repeat failures too quickly
+  }
+  else
+  {
+    stat = PCA9548A_70.control_read(&control_read_val);
+    if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
+  }
+
+  // ------------------------------
+  SensorPtr = &Mux2Temp1;   
+  stat = sensor_read (SensorPtr);
+
+  SensorPtr = &Mux2Temp2;
+  stat = sensor_read (SensorPtr);
+
+  SensorPtr = &Mux2Temp3;
+  stat = sensor_read (SensorPtr);
 
 
   Serial.println();
