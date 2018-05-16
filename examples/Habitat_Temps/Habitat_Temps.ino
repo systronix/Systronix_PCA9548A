@@ -62,9 +62,9 @@ Systronix_TMP275 Mux0Temp1;   // D1C1, top animal drawer, left compartment
 Systronix_TMP275 Mux0Temp2;   // D1C2, center
 Systronix_TMP275 Mux0Temp3;   // D1C3
 
-// End Cap Mux 0
-Systronix_TMP275 Mux0Temp5;
-Systronix_TMP275 Mux0Temp6;
+// End Cap 
+Systronix_TMP275 Mux4Temp5;
+Systronix_TMP275 Mux4Temp6;
 
 // back of D1C3, mostly for convenience of plugging first drawer cable from mux to ext sensor board not inside the drawer
 Systronix_TMP275 Mux0Temp7;
@@ -158,16 +158,14 @@ Mux0Temp2.begin (I2C_PINS_29_30, I2C_RATE_100);
 Mux0Temp3.setup (TMP275_SLAVE_ADDR_3, Wire1, (char*)"D1-C3");	// initialize this sensor instance
 Mux0Temp3.begin (I2C_PINS_29_30, I2C_RATE_100);
 
-
-Mux0Temp5.setup (TMP275_SLAVE_ADDR_5, Wire1, (char*)"ECTop");	// initialize this sensor instance
-Mux0Temp5.begin (I2C_PINS_29_30, I2C_RATE_100);
-
-
-Mux0Temp6.setup (TMP275_SLAVE_ADDR_6, Wire1, (char*)"ECBot");	// initialize this sensor instance
-Mux0Temp6.begin (I2C_PINS_29_30, I2C_RATE_100);
-
 Mux0Temp7.setup (TMP275_SLAVE_ADDR_7, Wire1, (char*)"D1C3 Back"); // initialize this sensor instance
 Mux0Temp7.begin (I2C_PINS_29_30, I2C_RATE_100);
+
+Mux4Temp5.setup (TMP275_SLAVE_ADDR_5, Wire1, (char*)"ECTop"); // initialize this sensor instance
+Mux4Temp5.begin (I2C_PINS_29_30, I2C_RATE_100);
+
+Mux4Temp6.setup (TMP275_SLAVE_ADDR_6, Wire1, (char*)"ECBot"); // initialize this sensor instance
+Mux4Temp6.begin (I2C_PINS_29_30, I2C_RATE_100);
 
 
 // Mux2Temp1.setup (TMP275_SLAVE_ADDR_1, Wire1, (char*)"D2-C1");	// initialize this sensor instance
@@ -350,19 +348,7 @@ void loop(void)
   SensorPtr = &Mux0Temp1;   
   stat = sensor_read (SensorPtr);
 
-  // // Enable Mux Channel 1
-  // stat = PCA9548A_70.control_write(PCA9548A_PORT_1_ENABLE);
-  // if (SUCCESS != stat)
-  // {
-  //   text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
-  //   Serial.printf("mux1 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
-  //   delay(dtime/2); // don't blast repeat failures too quickly
-  // }
-  // else
-  // {
-  //   stat = PCA9548A_70.control_read(&control_read_val);
-  //   if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
-  // }
+
 
 
   // ------------------------------
@@ -372,14 +358,30 @@ void loop(void)
   SensorPtr = &Mux0Temp3;
   stat = sensor_read (SensorPtr);
 
-  SensorPtr = &Mux0Temp5;
-  stat = sensor_read (SensorPtr);
-
-  SensorPtr = &Mux0Temp6;
-  stat = sensor_read (SensorPtr);
-
   SensorPtr = &Mux0Temp7;
   stat = sensor_read (SensorPtr);  
+
+  // Enable Mux Channel 4
+  stat = PCA9548A_70.control_write(PCA9548A_PORT_4_ENABLE);
+  if (SUCCESS != stat)
+  {
+    //text_ptr = (PCA9548A_70.status_text[PCA9548A_70.error.error_val]);
+    text_ptr = "where are i2c error strings?";
+    Serial.printf("mux1 control write failed with return of 0x%.2X: %s\r\n", PCA9548A_70.error.error_val, text_ptr);
+    delay(dtime/2); // don't blast repeat failures too quickly
+  }
+  else
+  {
+    stat = PCA9548A_70.control_read(&control_read_val);
+    if (verbose) Serial.printf("OK control=0x%.2X\r\n", control_read_val);
+  }  
+
+
+  SensorPtr = &Mux4Temp5;
+  stat = sensor_read (SensorPtr);
+
+  SensorPtr = &Mux4Temp6;
+  stat = sensor_read (SensorPtr);
 
 
   Serial.println();
