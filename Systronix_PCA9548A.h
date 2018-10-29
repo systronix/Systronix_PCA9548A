@@ -145,7 +145,7 @@ class Systronix_PCA9548A
 		we can't tell the difference between SUCCESS and I2C_WAITING
 		Since requestFrom is blocking, only "I2C message is over" status can occur.
 		In Writing, with endTransmission, it is blocking, so only end of message errors can exist.
-		*//*
+		*/
 #if defined I2C_T3_H 		
 		const char * const status_text[13] =
 		{
@@ -175,7 +175,7 @@ class Systronix_PCA9548A
 			"Other error"
 		};		
 #endif
-*/
+
 		/** error stucture
 		Note that this can be written by a library user, so it could be cleared if desired as part of 
 		some error recovery or logging operation. It could also be inadvertenly erased...
